@@ -1,7 +1,10 @@
-name: tests
+name: core tests
 on: [push, pull_request]
 permissions:
   contents: read
+defaults:
+  run:
+    working-directory: rag-preflight
 jobs:
   test:
     strategy:
