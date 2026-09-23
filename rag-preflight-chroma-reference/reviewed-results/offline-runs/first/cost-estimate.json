@@ -1,0 +1,16 @@
+{
+  "avoided_embedding_cost": "0.00",
+  "comparison_scope": "complete listed three-paper candidate batch",
+  "comparison_tokens": 67083,
+  "currency": "USD",
+  "estimate": true,
+  "estimated_cost": "0.00134166",
+  "excluded_costs": [
+    "database",
+    "generation",
+    "network",
+    "retries"
+  ],
+  "price_per_million_tokens": "0.02",
+  "tokens_to_embed": 67083
+}

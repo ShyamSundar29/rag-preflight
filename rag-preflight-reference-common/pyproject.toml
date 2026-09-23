@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-preflight-reference-common"
+version = "0.1.0"
+description = "Shared application pipeline for separate RAG Preflight vector-store references"
+requires-python = ">=3.12"
+classifiers = ["Operating System :: MacOS", "Operating System :: POSIX :: Linux"]
+dependencies = ["rag-preflight==0.1.0", "openai>=1.0,<3", "pypdf>=5,<7",
+                "tiktoken>=0.7,<1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

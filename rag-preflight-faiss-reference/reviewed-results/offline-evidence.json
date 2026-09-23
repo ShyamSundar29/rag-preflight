@@ -1,0 +1,95 @@
+{
+  "answer_run_id": "15bc883cdd7349fea546fe0e6982cc2d",
+  "checks_unverified": [
+    "real_openai_embedding_requests",
+    "real_openai_generation",
+    "retrieval_quality",
+    "answer_factuality"
+  ],
+  "curated_run_files": {
+    "first": [
+      "offline-runs/first/summary.json",
+      "offline-runs/first/cost-estimate.json",
+      "offline-runs/first/verification.json",
+      "offline-runs/first/ingestion-audit.json",
+      "offline-runs/first/source-evidence.json"
+    ],
+    "metadata": [
+      "offline-runs/metadata/summary.json",
+      "offline-runs/metadata/cost-estimate.json",
+      "offline-runs/metadata/verification.json",
+      "offline-runs/metadata/ingestion-audit.json",
+      "offline-runs/metadata/source-evidence.json"
+    ],
+    "omission": [
+      "offline-runs/omission/summary.json",
+      "offline-runs/omission/guarded-rejection.json"
+    ],
+    "simulated_answer": [
+      "offline-runs/simulated_answer/answer.json",
+      "offline-runs/simulated_answer/query-embedding-audit.json"
+    ],
+    "synthetic_edit": [
+      "offline-runs/synthetic_edit/preview.json"
+    ],
+    "unchanged": [
+      "offline-runs/unchanged/summary.json",
+      "offline-runs/unchanged/cost-estimate.json",
+      "offline-runs/unchanged/verification.json",
+      "offline-runs/unchanged/ingestion-audit.json",
+      "offline-runs/unchanged/source-evidence.json"
+    ]
+  },
+  "first_planned_embeddings": 171,
+  "first_run_id": "ac262b8342c94fb7b516fcb1c86787be",
+  "first_simulated_tokens": 67083,
+  "guarded_index_preserved": true,
+  "independent_live_proof": false,
+  "live_openai_embeddings_verified": false,
+  "live_openai_generation_verified": false,
+  "metadata_planned_embeddings": 0,
+  "metadata_run_id": "e3ab9a89ba7543bab4d45eb1cc34360a",
+  "naive_removed_page_ids": 3,
+  "omission_run_id": "2962db50d95544c39f005aca08524f0e",
+  "paid_api_calls": 0,
+  "proof_kind": "offline_local_faiss_simulated_vectors",
+  "raw_run_files": "local ignored runs; full journals and FAISS state are not shipped",
+  "reproduction": "python scripts/offline_evidence.py --state-root NEW_STATE_PATH --runs-root NEW_RUNS_PATH --output NEW_SUMMARY_PATH",
+  "schema_version": 2,
+  "simulated_question_returned_rows": 5,
+  "synthetic_edit_preview": {
+    "checks_unverified": [
+      "real_document_edit",
+      "live_openai_requests",
+      "actual_provider_billing"
+    ],
+    "cost_estimate": {
+      "avoided_embedding_cost": "0.00132742",
+      "comparison_scope": "hypothetical complete three-paper candidate batch",
+      "comparison_tokens": 67105,
+      "currency": "USD",
+      "estimate": true,
+      "estimated_cost": "0.00001468",
+      "excluded_costs": [
+        "database",
+        "generation",
+        "network",
+        "retries"
+      ],
+      "price_per_million_tokens": "0.02",
+      "tokens_to_embed": 734
+    },
+    "edited_chunk_inputs": 2,
+    "paid_api_calls": 0,
+    "planned_embeddings": 2,
+    "planned_upserts": 49,
+    "proposed_deletions": 0,
+    "scenario": "synthetic_text_edit_preview",
+    "source_files_modified": false,
+    "source_id": "2005.11401v4.pdf",
+    "synthetic_source_version": true,
+    "vector_store_modified": false
+  },
+  "unchanged_planned_embeddings": 0,
+  "unchanged_run_id": "fe7c2a56887f458c8f2df6755f64e1a6"
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-09-15",
+  "methods": [
+    "file magic",
+    "SHA-256 local bytes",
+    "pdfinfo page tree",
+    "pypdf per-page extraction",
+    "first-page rendered title/version visual check",
+    "version-pinned arXiv PDF SHA-256 byte equality"
+  ],
+  "remote_byte_equality_checked": true,
+  "papers": [
+    {
+      "source_id": "2005.11401v4.pdf",
+      "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "pages": 19,
+      "all_pages_extract_nonempty_text": true,
+      "first_page_title_matches": true,
+      "rendered_version_mark_matches": true
+    },
+    {
+      "source_id": "2307.03172v3.pdf",
+      "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
+      "pages": 18,
+      "all_pages_extract_nonempty_text": true,
+      "first_page_title_matches": true,
+      "rendered_version_mark_matches": true
+    },
+    {
+      "source_id": "2310.11511v1.pdf",
+      "sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978",
+      "pages": 30,
+      "all_pages_extract_nonempty_text": true,
+      "first_page_title_matches": true,
+      "rendered_version_mark_matches": true
+    }
+  ],
+  "remote_sources": [
+    "https://arxiv.org/pdf/2005.11401v4",
+    "https://arxiv.org/pdf/2307.03172v3",
+    "https://arxiv.org/pdf/2310.11511v1"
+  ]
+}

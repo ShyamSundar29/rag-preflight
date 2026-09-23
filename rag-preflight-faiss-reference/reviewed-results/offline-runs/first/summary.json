@@ -1,0 +1,16 @@
+{
+  "actual_embedding_tokens": 67083,
+  "checks_unverified": [
+    "historical_openai_model_execution_proof",
+    "live_openai_embedding_calls"
+  ],
+  "completed_embedding_inputs": 171,
+  "ledger_revision": "84b1fb32758f6ed55fcdc35265791f7ef373bbdf42a795ba03fa54671c6f2f43",
+  "planned_embeddings": 171,
+  "proposed_deletions": 0,
+  "provider_type": "SimulatedProvider",
+  "run_id": "ac262b8342c94fb7b516fcb1c86787be",
+  "status": "committed",
+  "vector_readback_passed": true,
+  "verified_index_ids": 171
+}

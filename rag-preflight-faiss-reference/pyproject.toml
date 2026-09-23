@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-preflight-faiss-reference"
+version = "0.1.0"
+description = "Separate FAISS/OpenAI research-paper application for RAG Preflight"
+requires-python = ">=3.12"
+classifiers = ["Operating System :: MacOS", "Operating System :: POSIX :: Linux"]
+dependencies = ["rag-preflight-reference-common==0.1.0", "faiss-cpu>=1.8,<2",
+                "numpy>=1.25,<3"]
+
+[project.scripts]
+rag-preflight-faiss-reference = "rag_preflight_faiss_reference.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "proof_kind": "bounded_live_openai_reference_run",
+  "executed_on": "2026-09-21",
+  "backend": "faiss",
+  "corpus": {
+    "documents": 3,
+    "pages": 67,
+    "chunks": 171
+  },
+  "embedding": {
+    "model": "text-embedding-3-small",
+    "dimensions": 1536,
+    "first_ingestion": {
+      "planned_inputs": 171,
+      "completed_inputs": 171,
+      "actual_input_tokens": 67083,
+      "api_requests": 11,
+      "request_ids_recorded_in_ignored_run_directory": true
+    },
+    "unchanged_reingestion": {
+      "planned_inputs": 0,
+      "completed_inputs": 0,
+      "actual_input_tokens": 0
+    },
+    "metadata_only_reingestion": {
+      "planned_inputs": 0,
+      "completed_inputs": 0,
+      "actual_input_tokens": 0
+    },
+    "question_embedding": {
+      "actual_input_tokens": 10,
+      "api_requests": 1
+    }
+  },
+  "index_readback": {
+    "passed": true,
+    "ids_checked": 171,
+    "payloads_checked": 171,
+    "vector_readback_passed": true
+  },
+  "generation": {
+    "model": "gpt-5.6-luna",
+    "api_requests": 1,
+    "question": "What two kinds of memory does RAG combine?",
+    "input_tokens": 1995,
+    "output_tokens": 40,
+    "claimed_citation_numbers": [
+      1,
+      3
+    ],
+    "retrieved_evidence": [
+      {
+        "number": 1,
+        "source_id": "2005.11401v4.pdf",
+        "unit": "page:9"
+      },
+      {
+        "number": 3,
+        "source_id": "2005.11401v4.pdf",
+        "unit": "page:2"
+      }
+    ]
+  },
+  "evidence_boundaries": {
+    "live_openai_embeddings_verified": true,
+    "live_openai_generation_verified": true,
+    "local_store_persistence_verified": true,
+    "api_key_recorded": false,
+    "raw_source_text_recorded": false,
+    "vectors_recorded": false,
+    "provider_billing_dashboard_verified": false,
+    "citation_claim_support_human_reviewed": false,
+    "answer_factuality_human_reviewed": false,
+    "independently_reproduced": false
+  },
+  "local_ignored_run_ids": {
+    "ingestion": "f88b00d03b9e49cebcdac3bc1db8d742",
+    "unchanged": "b1895f9cc417494ea09acdb40b0b2ce6",
+    "metadata_only": "f09784472b1944cd8c8c1cadd17e5e15",
+    "answer": "55d80f4c0cd247f08ae7184956707c38"
+  },
+  "limitations": [
+    "One three-document corpus and one question do not establish retrieval quality.",
+    "Successful API responses do not verify provider billing or historical model provenance.",
+    "Citation labels identify retrieved chunks; support and factuality still require review."
+  ]
+}

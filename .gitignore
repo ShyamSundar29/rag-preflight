@@ -1,0 +1,25 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.mypy_cache/
+**/build/
+**/dist/
+**/state/
+**/runs/
+**/*.partial
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# Private/generated handoff material. Release distributions belong on a release,
+# not in source history.
+artifacts/
+pdfs/
+rag-preflight-0.1.0/
+rag-preflight-0.1.0.zip

@@ -1,0 +1,52 @@
+{
+  "namespace": "demo-tenant",
+  "pipeline_id": "parser-v1/chunker-v1",
+  "embedding_model": "demo-model-v1/dim-2",
+  "documents": [
+    {
+      "document_id": "handbook",
+      "source_version": "v1",
+      "expected_units": [
+        "section:leave",
+        "section:approval"
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "document_id": "handbook",
+      "source_version": "v1",
+      "completed": true,
+      "processed_units": [
+        "section:leave",
+        "section:approval"
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunk_key": "leave",
+      "text": "Employees have 20 days of leave.",
+      "metadata": {
+        "document_id": "handbook",
+        "source_version": "v1",
+        "source": "handbook.pdf",
+        "units": [
+          "section:leave"
+        ]
+      }
+    },
+    {
+      "chunk_key": "approval",
+      "text": "Managers approve leave requests.",
+      "metadata": {
+        "document_id": "handbook",
+        "source_version": "v1",
+        "source": "handbook.pdf",
+        "units": [
+          "section:approval"
+        ]
+      }
+    }
+  ]
+}

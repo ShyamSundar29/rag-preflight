@@ -1,0 +1,19 @@
+{
+  "checks_run": [
+    "embedding_correspondence",
+    "embedding_dimensions",
+    "finite_values",
+    "nonzero_vectors",
+    "duplicate_vectors"
+  ],
+  "checks_skipped": [],
+  "errors": 0,
+  "findings": [],
+  "max_warnings": null,
+  "measurements": {
+    "embedding_records_checked": 1,
+    "expected_embeddings": 1
+  },
+  "passed": true,
+  "warnings": 0
+}

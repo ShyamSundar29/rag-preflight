@@ -1,0 +1,21 @@
+{
+  "checks_unverified": [
+    "retrieval_impact_of_removed_page"
+  ],
+  "comparison_scope": "isolated copy versus guarded main collection",
+  "guarded": {
+    "blocked_before_api_or_vector_write": true,
+    "finding_codes": [
+      "failed_units",
+      "missing_chunk_units",
+      "processed_units_mismatch"
+    ]
+  },
+  "guarded_index_preserved": true,
+  "naive_candidate_ids_for_source": 46,
+  "naive_remaining_ids": 168,
+  "naive_removed_ids": 3,
+  "run_id": "a3ff474078b240eab70ec80b5f062ea4",
+  "source_id": "2005.11401v4.pdf",
+  "unit": "page:2"
+}

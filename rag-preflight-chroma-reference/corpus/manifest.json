@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "scope": "exactly_listed_pdfs",
+  "papers": [
+    {
+      "source_id": "2005.11401v4.pdf",
+      "arxiv_page": "https://arxiv.org/abs/2005.11401",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "pages": 19
+    },
+    {
+      "source_id": "2307.03172v3.pdf",
+      "arxiv_page": "https://arxiv.org/abs/2307.03172",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
+      "pages": 18
+    },
+    {
+      "source_id": "2310.11511v1.pdf",
+      "arxiv_page": "https://arxiv.org/abs/2310.11511",
+      "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection",
+      "sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978",
+      "pages": 30
+    }
+  ]
+}

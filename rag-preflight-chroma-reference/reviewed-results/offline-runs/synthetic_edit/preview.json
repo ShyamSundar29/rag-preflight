@@ -1,0 +1,33 @@
+{
+  "checks_unverified": [
+    "real_document_edit",
+    "live_openai_requests",
+    "actual_provider_billing"
+  ],
+  "cost_estimate": {
+    "avoided_embedding_cost": "0.00132742",
+    "comparison_scope": "hypothetical complete three-paper candidate batch",
+    "comparison_tokens": 67105,
+    "currency": "USD",
+    "estimate": true,
+    "estimated_cost": "0.00001468",
+    "excluded_costs": [
+      "database",
+      "generation",
+      "network",
+      "retries"
+    ],
+    "price_per_million_tokens": "0.02",
+    "tokens_to_embed": 734
+  },
+  "edited_chunk_inputs": 2,
+  "paid_api_calls": 0,
+  "planned_embeddings": 2,
+  "planned_upserts": 49,
+  "proposed_deletions": 0,
+  "scenario": "synthetic_text_edit_preview",
+  "source_files_modified": false,
+  "source_id": "2005.11401v4.pdf",
+  "synthetic_source_version": true,
+  "vector_store_modified": false
+}

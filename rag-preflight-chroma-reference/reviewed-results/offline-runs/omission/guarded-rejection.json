@@ -1,0 +1,59 @@
+{
+  "checks_run": [
+    "record_structure",
+    "empty_text",
+    "duplicate_text",
+    "required_metadata",
+    "repeated_boilerplate",
+    "chunk_length_distribution",
+    "document_completeness",
+    "chunk_identity",
+    "json_metadata",
+    "unit_text_yield:2005.11401v4.pdf",
+    "unit_text_yield:2307.03172v3.pdf",
+    "unit_text_yield:2310.11511v1.pdf"
+  ],
+  "checks_skipped": [
+    "short_chunk",
+    "low_distinctiveness",
+    "token_limit"
+  ],
+  "errors": 3,
+  "findings": [
+    {
+      "chunk_index": null,
+      "chunk_key": null,
+      "code": "failed_units",
+      "document_id": "2005.11401v4.pdf",
+      "message": "Extraction failed on units ['page:2'].",
+      "severity": "error",
+      "suggestion": "Inspect the source manifest, extraction receipt and referenced record."
+    },
+    {
+      "chunk_index": null,
+      "chunk_key": null,
+      "code": "processed_units_mismatch",
+      "document_id": "2005.11401v4.pdf",
+      "message": "Missing units ['page:2']; unexpected units [].",
+      "severity": "error",
+      "suggestion": "Inspect the source manifest, extraction receipt and referenced record."
+    },
+    {
+      "chunk_index": null,
+      "chunk_key": null,
+      "code": "missing_chunk_units",
+      "document_id": "2005.11401v4.pdf",
+      "message": "No nonempty chunks cover units ['page:2'].",
+      "severity": "error",
+      "suggestion": "Inspect the source manifest, extraction receipt and referenced record."
+    }
+  ],
+  "max_warnings": null,
+  "measurements": {
+    "chunks_audited": 168,
+    "documents_audited": 3,
+    "missing_units": 1
+  },
+  "passed": false,
+  "warnings": 0
+}

@@ -1,0 +1,7 @@
+include LICENSE README.md CHANGELOG.md CONTRIBUTING.md
+recursive-include docs *.md *.json
+recursive-include examples *.py *.json
+recursive-include tests *.py
+include .github/workflows/tests.yml
+recursive-include scripts *.py
+include src/rag_preflight/py.typed

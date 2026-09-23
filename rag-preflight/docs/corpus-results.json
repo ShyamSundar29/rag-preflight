@@ -1,0 +1,68 @@
+{
+  "sources": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.pdf",
+      "sha256": "60b30efa1048900833d1758440247fe8ac85a3134f2327388dcb24e07d814c89",
+      "bytes": 2858365
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/README.md",
+      "sha256": "5c63b18d017b2200be7474166621177a311f461a9a5cf15813b865bacb4f2b9b",
+      "bytes": 11348
+    }
+  ],
+  "documents": 2,
+  "source_units": 210,
+  "chunks": 701,
+  "baseline": {
+    "passed": true,
+    "findings": {
+      "low_unit_text_yield": 1
+    },
+    "audit_seconds": 0.02646187499340158,
+    "skipped": [
+      "short_chunk",
+      "low_distinctiveness",
+      "token_limit"
+    ],
+    "finding_details": [
+      {
+        "code": "low_unit_text_yield",
+        "severity": "warning",
+        "message": "Unit 'section-offset:8330' has 27 characters; document median is 357.5.",
+        "document_id": "pandas.md",
+        "chunk_index": null,
+        "chunk_key": null,
+        "suggestion": "Compare with the source; short units can be legitimate."
+      }
+    ]
+  },
+  "injected_scenarios": {
+    "omitted_source_unit_rejected": true,
+    "incomplete_snapshot_blocked": true,
+    "omitted_document_rejected": true,
+    "one_text_edit_one_embedding": true,
+    "metadata_backfill_zero_embeddings": true,
+    "named_retirement_with_default_guard": true,
+    "completed_retry_noop": true,
+    "wrong_declared_model_rejected": true,
+    "identical_vectors_warn": true,
+    "whole_unit_text_yield_warns": true,
+    "indexed_plan_contains_only_touched_document": true
+  },
+  "known_limits": {
+    "within_unit_truncation_not_detected": true,
+    "uniform_truncation_not_detected_by_yield": true
+  },
+  "snapshot_json_bytes": 289778,
+  "sqlite_bytes_including_wal": 346088,
+  "vector_benchmark": {
+    "count": 2000,
+    "dimensions": 1536,
+    "seconds": {
+      "python": 1.1490656250098255,
+      "numpy": 0.03956725000170991
+    },
+    "note": "Validation only; data construction excluded. Python lists versus NumPy arrays. Single local run, no throughput guarantee."
+  }
+}

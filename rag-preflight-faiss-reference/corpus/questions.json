@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "questions": [
+    {
+      "question": "What two kinds of memory does the original RAG formulation combine?",
+      "expected_source": "2005.11401v4.pdf",
+      "expected_concepts": [
+        "parametric",
+        "non-parametric"
+      ]
+    },
+    {
+      "question": "What is the lost-in-the-middle effect for language models?",
+      "expected_source": "2307.03172v3.pdf",
+      "expected_concepts": [
+        "position",
+        "middle"
+      ]
+    },
+    {
+      "question": "How does Self-RAG change when retrieval is used?",
+      "expected_source": "2310.11511v1.pdf",
+      "expected_concepts": [
+        "adaptive",
+        "reflection"
+      ]
+    },
+    {
+      "question": "What is the university parking policy?",
+      "expected_source": null,
+      "expected_behavior": "abstain_if_evidence_missing"
+    }
+  ]
+}
