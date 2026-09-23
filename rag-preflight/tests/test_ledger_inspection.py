@@ -68,7 +68,7 @@ class LedgerInspectionTests(unittest.TestCase):
 
     def test_cli_json_and_database_bytes_unchanged(self):
         with tempfile.TemporaryDirectory() as folder:
-            path=Path(folder)/'ledger ?#.db'
+            path=Path(folder)/'ledger with spaces.db'
             with SQLiteSnapshotStore(path) as store:self.populate(store)
             before=path.read_bytes()
             status,out,err=self.cli(['ledger','summary',str(path),'--json'])

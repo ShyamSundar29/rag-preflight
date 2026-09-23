@@ -315,9 +315,12 @@ class ExistingIndexTests(unittest.TestCase):
         (self.root/'a.txt').write_text('text');self.write([])
         r=audit_existing_index(self.root,self.export,source_scope_complete=True)
         self.assertNotIn('source_not_indexed',self.codes(r))
+        real_walk=os.walk
         def failing_walk(*args,**kwargs):
-            kwargs['onerror'](PermissionError('failure'))
-            return iter(())
+            if Path(args[0]).resolve() == self.root.resolve():
+                kwargs['onerror'](PermissionError('failure'))
+                return iter(())
+            return real_walk(*args,**kwargs)
         with patch('rag_preflight.existing.os.walk',side_effect=failing_walk):
             r=self.audit()
         self.assertIn('source_enumeration_failed',self.codes(r))
