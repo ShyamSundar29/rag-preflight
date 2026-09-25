@@ -7,8 +7,13 @@ name = "rag-preflight-chroma-reference"
 version = "0.1.0"
 description = "Separate, evidence-driven Chroma reference integration for RAG Preflight"
 requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
 classifiers = ["Operating System :: MacOS", "Operating System :: POSIX :: Linux"]
 dependencies = ["rag-preflight-reference-common==0.1.0", "chromadb>=1.0,<3"]
+
+[project.urls]
+Repository = "https://github.com/ShyamSundar29/rag-preflight"
 
 [project.scripts]
 rag-preflight-reference = "rag_preflight_reference.cli:main"

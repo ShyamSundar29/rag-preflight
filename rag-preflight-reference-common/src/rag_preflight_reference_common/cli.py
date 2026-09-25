@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 import sys
-from typing import Callable
+from typing import Callable, TypeVar
 
 from rag_preflight import SQLiteSnapshotStore, estimate_embedding_cost, stable_chunk_id, plan_update
 from .app import ReferenceApp
@@ -14,6 +14,9 @@ from .corpus import CandidateRejected, prepare
 from .provider import OpenAIProvider
 from .store import VectorStore, verify_payloads
 from .tokenizer import encoding_for_model
+
+
+SettingsT = TypeVar('SettingsT', bound=Settings)
 
 
 def parser(prog: str, backend_name: str, root_env: str) -> argparse.ArgumentParser:
@@ -31,6 +34,8 @@ def parser(prog: str, backend_name: str, root_env: str) -> argparse.ArgumentPars
                          help='Current caller-supplied USD price for embedding cost estimate')
     command.add_argument('--embedding-budget-usd',
                          help='Maximum estimated and measured ingestion embedding spend')
+    command.add_argument('--max-output-tokens', type=int,
+                         help='Generation output cap; defaults to the application setting')
     sub = command.add_subparsers(dest='command', required=True)
     sub.add_parser('verify-papers', help='Check pinned PDF scope, extraction and Preflight audits')
     sub.add_parser('dry-run', help='Prepare a guarded plan and exact-token embedding estimate; no API calls')
@@ -52,6 +57,10 @@ def parser(prog: str, backend_name: str, root_env: str) -> argparse.ArgumentPars
         help='Plan-only synthetic source edit; compare selective embedding cost without API calls')
     edit.add_argument('source_id')
     edit.add_argument('--edited-chunks', type=int, default=2)
+    live_edit = sub.add_parser('demonstrate-text-edit',
+        help='Embed a synthetic selective edit into an isolated verified clone')
+    live_edit.add_argument('source_id')
+    live_edit.add_argument('--edited-chunks', type=int, default=2)
     comparison = sub.add_parser('compare-omission',
         help='Ask the same question of guarded index and verified omission clone')
     comparison.add_argument('omission_run_id')
@@ -60,8 +69,8 @@ def parser(prog: str, backend_name: str, root_env: str) -> argparse.ArgumentPars
     return command
 
 
-def main(argv: list[str] | None, settings_type: type[Settings],
-         app_type: Callable[[Settings], ReferenceApp],
+def main(argv: list[str] | None, settings_type: type[SettingsT],
+         app_type: Callable[[SettingsT], ReferenceApp],
          store_factory: Callable[..., VectorStore],
          prog: str, backend_name: str) -> int:
     args = parser(prog, backend_name, settings_type.ROOT_ENV).parse_args(
@@ -80,6 +89,8 @@ def main(argv: list[str] | None, settings_type: type[Settings],
         if args.embedding_budget_usd is not None:
             settings = replace(settings,
                                max_estimated_embedding_usd=args.embedding_budget_usd)
+        if args.max_output_tokens is not None:
+            settings = replace(settings, max_output_tokens=args.max_output_tokens)
         app = app_type(settings)
         if args.command == 'verify-papers':
             candidate = prepare(settings)
@@ -126,6 +137,9 @@ def main(argv: list[str] | None, settings_type: type[Settings],
             if args.command == 'ingest':
                 result = app.ingest(provider, metadata_tag=args.metadata_tag,
                                     fail_after_upserts=args.fail_after_upserts)
+            elif args.command == 'demonstrate-text-edit':
+                result = app.demonstrate_text_edit(provider, args.source_id,
+                                                   edited_chunks=args.edited_chunks)
             elif args.command == 'recover':
                 result = app.recover(provider)
             elif args.command == 'compare-omission':

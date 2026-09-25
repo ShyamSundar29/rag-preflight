@@ -12,7 +12,8 @@ class FakeEmbeddings:
         self.calls.append(kwargs)
         return SimpleNamespace(data=[SimpleNamespace(index=1, embedding=[2.0]),
                                      SimpleNamespace(index=0, embedding=[1.0])],
-            usage=SimpleNamespace(total_tokens=7), _request_id='request-a')
+            usage=SimpleNamespace(total_tokens=7), _request_id='request-a',
+            model='text-embedding-3-small-2026-01-01')
 
 
 class FakeResponses:
@@ -20,7 +21,7 @@ class FakeResponses:
     def create(self, **kwargs):
         self.calls.append(kwargs)
         return SimpleNamespace(output_text='A cited answer [1].', id='answer-a',
-            status='completed',
+            status='completed', model='explicit-model-2026-01-01',
             usage=SimpleNamespace(input_tokens=11, output_tokens=4))
 
 
@@ -37,6 +38,8 @@ class ProviderBoundaryTests(unittest.TestCase):
         result = provider.embed(['first', 'second'])
         self.assertEqual(result.vectors, ((1.0,), (2.0,)))
         self.assertEqual(result.actual_tokens, 7)
+        self.assertEqual(result.requested_model, 'text-embedding-3-small')
+        self.assertEqual(result.response_model, 'text-embedding-3-small-2026-01-01')
         call = provider.client.embeddings.calls[0]
         self.assertEqual(call['model'], 'text-embedding-3-small')
         self.assertEqual(call['input'], ['first', 'second'])
@@ -46,6 +49,8 @@ class ProviderBoundaryTests(unittest.TestCase):
         provider = self.provider()
         answer = provider.answer('question', [('1', 'context')])
         self.assertEqual((answer.input_tokens, answer.output_tokens), (11, 4))
+        self.assertEqual(answer.requested_model, 'explicit-model')
+        self.assertEqual(answer.response_model, 'explicit-model-2026-01-01')
         call = provider.client.responses.calls[0]
         self.assertEqual(call['model'], 'explicit-model')
         self.assertFalse(call['store'])
@@ -65,6 +70,7 @@ class ProviderBoundaryTests(unittest.TestCase):
     def test_incomplete_generation_is_not_accepted(self):
         provider = self.provider()
         provider.client.responses.create = lambda **kwargs: SimpleNamespace(
-            status='incomplete', output_text='partial', usage=None)
-        with self.assertRaisesRegex(ValueError, 'did not complete'):
+            status='incomplete', output_text='partial', usage=None,
+            incomplete_details=SimpleNamespace(reason='max_output_tokens'))
+        with self.assertRaisesRegex(ValueError, 'max_output_tokens'):
             provider.answer('question', [('1', 'context')])

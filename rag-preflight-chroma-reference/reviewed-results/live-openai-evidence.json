@@ -1,88 +1,586 @@
 {
-  "schema_version": 1,
-  "proof_kind": "bounded_live_openai_reference_run",
-  "executed_on": "2026-09-21",
   "backend": "chroma",
   "corpus": {
+    "chunks": 171,
     "documents": 3,
     "pages": 67,
-    "chunks": 171
-  },
-  "embedding": {
-    "model": "text-embedding-3-small",
-    "dimensions": 1536,
-    "first_ingestion": {
-      "planned_inputs": 171,
-      "completed_inputs": 171,
-      "actual_input_tokens": 67083,
-      "api_requests": 11,
-      "request_ids_recorded_in_ignored_run_directory": true
-    },
-    "unchanged_reingestion": {
-      "planned_inputs": 0,
-      "completed_inputs": 0,
-      "actual_input_tokens": 0
-    },
-    "metadata_only_reingestion": {
-      "planned_inputs": 0,
-      "completed_inputs": 0,
-      "actual_input_tokens": 0
-    },
-    "question_embedding": {
-      "actual_input_tokens": 10,
-      "api_requests": 1
-    }
-  },
-  "index_readback": {
-    "passed": true,
-    "ids_checked": 171,
-    "payloads_checked": 171,
-    "vector_readback_passed": true
-  },
-  "generation": {
-    "model": "gpt-5.6-luna",
-    "api_requests": 1,
-    "question": "What two kinds of memory does RAG combine?",
-    "input_tokens": 1995,
-    "output_tokens": 42,
-    "claimed_citation_numbers": [
-      1,
-      3
-    ],
-    "retrieved_evidence": [
+    "source_files": [
       {
-        "number": 1,
-        "source_id": "2005.11401v4.pdf",
-        "unit": "page:9"
+        "pages": 19,
+        "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+        "source_id": "2005.11401v4.pdf"
       },
       {
-        "number": 3,
-        "source_id": "2005.11401v4.pdf",
-        "unit": "page:2"
+        "pages": 18,
+        "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
+        "source_id": "2307.03172v3.pdf"
+      },
+      {
+        "pages": 30,
+        "sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978",
+        "source_id": "2310.11511v1.pdf"
       }
     ]
   },
+  "embedding": {
+    "dimensions": 1536,
+    "first_ingestion": {
+      "actual_input_tokens": 67083,
+      "api_requests": 11,
+      "completed_inputs": 171,
+      "planned_inputs": 171,
+      "requests": [
+        {
+          "actual_input_tokens": 6363,
+          "input_count": 16,
+          "input_hashes": [
+            "31c755a1b4b8fc9e4a302d1fe695fd0a84dd33e0f8a0ede58cecc6dd02ffc455",
+            "3494d96ee150dcf42d2de477e3c6275ec3dfecf90f0af621c7d9871431e51fbb",
+            "ac583daf4e964e81ac22193735afb80aca058b521f8f6fe9050ab40a556509b6",
+            "ec6973031cea0d30bb9ce2635e4d5109339f5cbaebe2ce0ab33a9d6d8756f7ee",
+            "72154dcb3f905c798ecd59815d85f7134533a739d493e56e24a1769a2ef4b084",
+            "9d1e295c0f10855a77597825f084fa4bf04c1420a69af46bb3a846eb1fd1532e",
+            "27ffe923d94f43d0a9b9d21db2bbfd6cdea18888709e59b9140e688268074c95",
+            "985a473b111fe874823b1a11af116fc54a05ad681076082e9f65b7ab8539716e",
+            "af95aaa6b3d907abb2c73c2698663bfbfcb6c60e409a4efc4b4b8234c3469256",
+            "9481a65719e17c84c219e1ccfb46fe80962b2d73cc7a2b137e4c9db76b8f794c",
+            "e8f65f2b618d5723842d7b00593958a52d2c438d892a9d36c652359074779c03",
+            "ef18b28ecf1887d48de0dbdfd7f61bd887a5785a5eeacc7ee05e291e8e4400c6",
+            "0b565d75a6d0daf725669c37d271fddc2979ed82c46649ddb4380d7d564d5c36",
+            "0151ce2dca5baff1af299d26aec2d1502deb26ae4a604d8ad22518b5019e4595",
+            "d2111841aa1849439d9ed917b5dcfef202119e8e449e608dea142acb4050d1c0",
+            "75bfe0d3c967eae82ffa65e6ea28924f7e40114c76982d74b5c5ad5301f32035"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 5933,
+          "input_count": 16,
+          "input_hashes": [
+            "f36cf14eb01fabaf549ea8cdbbf0bc513af73cc27d41fcebdfd83e45abe1044a",
+            "7e2810df23130070ab0b4c1194c75e5bc3bc5ecd361e4fe8d84cd82adfd2cb67",
+            "73458da26ec367ad5c50e97d5aa4f9af582f7958814f55e98d86b98739e5fff1",
+            "c951f454a151a5a9de6856c5002a60d309f7a313be612f0fb1f9a0a9fcc9a288",
+            "a28826053da96e1c62e93e18e9a9a2026988cb72b28b52ee532b9675af114e47",
+            "0a4eccbf830ef3b341bfb2e41ba391eb8a26c3bba2b09da714936905b7aa88cb",
+            "02dc067faf5fd264bb267c121c0a2a71e30ee76e8c99d102c188f202b7ad11f6",
+            "d60e5aa7eb543dbdc4b0c0bedc0ef69a0eaed193256f53780a54626cee6d4f81",
+            "929bf95a5f26700aee95f362aca134b6bab6546e432d74908510f5bfd1037cbb",
+            "956e94ea53c9496a8f8bf2188ef7d5884cfbce832f7bcd10a12f1b15ce6b22b9",
+            "4ec924fa53bafa2037ac5e492c86f9c49141d24c50025b09175d450747a2ea3b",
+            "d56df4a343c8eec4432b678e8760dadfd11adebd95343dcc882a4802e29c90fe",
+            "4f43edb5ba8d1d48618fbd507f634c2ea45d760556d7e85e41d16ada67ef8edc",
+            "a993a8b136c887e888a7a08cc422556ccedf67a350e87236b694757129587ac0",
+            "eea7dc35325ac23509353c0475a9f3d86eda5d579119603074682965a56b795a",
+            "a7e6a25765d8429a5c55c04099403b2b343ba88c295373855a51b005f5378919"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 5776,
+          "input_count": 16,
+          "input_hashes": [
+            "d4b48d613b1ff053bc296bdec1f3a5b2d3049e2a17a5f7180497ec96a47a05c4",
+            "0e1acdf80715a5ef05db3285777374884e0d46a0dc1e800e0239d0de7f298e2d",
+            "197582312da6523a2c30251b49f64cb6a66d9f9a78f98cd4468ca995bdb16bb0",
+            "f0c49b7c4defe63886f313810355ae64d440c5d70655cd7a3bb1b5d6b4d384b7",
+            "2191d31be2bc1d30829d9ab3a3c2f5317a9f96bf3212c24072a91d454528a7e1",
+            "85f7116602f7ba6ef44af58fac38b9ede155be9a6c43b687666368c58c5128c3",
+            "3dc9949d0fad3908b31e39a7663756126533df854d2dd78f49ce7dce07ad132d",
+            "608ccb3a569f221c41c98a017925c3f67941ba11fe025d7ee3d604d54f7b69dd",
+            "b480fb3859fe2f01c24bda33855bf2b3fc07db2b05dea05bb33430acb95a83b0",
+            "b41007a03553790d42fc9286f455132df8b7ed42460d962b7606d98aca766791",
+            "02c039a67df70efd2c0faf76ce8caf0978719b55a367f24dad218eeeab0c68f4",
+            "29ccd7e23d88bde9aa78147f043ae3bdaf1e969316d00d2c5c19cd9548449999",
+            "aba8240d41a9e7a288098ca373db55a821cbe052f831dbafb82440b1f760c6a5",
+            "70763c54708224cf43ca5c3096d3ed428daccfe7a858351912037d51c19e6750",
+            "413f434aebe5f32f6b819c756fc67fec7ff2b3e670c19325307d28dd79075726",
+            "22094503caf179de61184de5463e79e22a22eb73a557308a5dea1ca98a055f92"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 6159,
+          "input_count": 16,
+          "input_hashes": [
+            "ad1996e3efce5d4b89664c60bb3fa3ab9299a2a3e9f2a509177e0db1a70d0de0",
+            "02b9609a69930ccefb3ff373e2248aed290ac176ddcae4ee3eb8788c04fe1846",
+            "e626b087471fcf2df43614b7b88cbe4a83b1a1535454a7b17973378b44bedd26",
+            "140579fd263e7abea4164be37bfd754061dbbfed00f63f607bd66cf427ac5bfd",
+            "ce129898b9d7218797f294ebc9d44754c990bb488905f36cb83d8217be330ad3",
+            "9a199d1e07d4c2bbf65194680678f6edc109e464f2c7dd5a564adc3e6ee7d0f3",
+            "aece64d5cf990f7f20696bc94aca0ee026fa50f8335676b006bf61526e8a8d1b",
+            "1c3e13d999e24797e38e7a9733eaa07d1677181144d01cf808b156c2e1506d4a",
+            "f5b0f2acb4be5d885992a709434124b7477fa763ccd28b518697477dcd236d48",
+            "f3a1751b3bda6d5adbb0f378662dd291e52deb32e94e265eb79b3ae9e035b995",
+            "ef2fe6815dd838d37e3d77fe18f42294fd49fc9186d99980cf7d38cf338a8f95",
+            "1c25bc1cccf41198f919c9890b608d8f48a01e93d81648bca2f27cf039449ab7",
+            "7d2f6e2edc89ed4dac9d2836692ca13139a2a7fb6d65e4e2f4c44e6892ae0aeb",
+            "238dfb05791916510376914dcb8b29caba66eae5a1ef17058bf4246eaeeb2db4",
+            "5688287cee80932bea6f4151452cc7cbedf4608d50aac48ef358ff118539f7cf",
+            "a15e3a38ff9377d670883fc0f31a2f1053fa2273153f98bb99cbe88dad57dcfb"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 5766,
+          "input_count": 16,
+          "input_hashes": [
+            "0d84c148b774dbd8d0203e87bd2156a9f34283f0e737eabc2cdb8c540a957a09",
+            "1bb6058f8ace5ce269603b891c0941c81a1356a881aea92bae0465ecfb65191a",
+            "830211d3080814eb38fdcdfcd4f2f86c77cf917b9964cdab68dc1b3908861e6f",
+            "a31e1f0892c9433e056a57c3d7fcee47139fd0e038a7edfd2a8b216fd9e43f8b",
+            "dc1ae912b3861272bbf62305f4f2be3192951cf0f7b333cd8f12e1e0b6aa72d7",
+            "d10380293d9f247246c478280c437008005d28e7920fb5f6ed616d978c02439d",
+            "99830ac5b6bf8ddcdbacd74a3172c62e2ee76e1d6affddf32a3c0db36b318f24",
+            "448af022412122df023e41ecff298636065f9e4aa0db7121af349a195ddec023",
+            "df4f577f5103bea7816fbc633257df246b50f7585eaac8577886df0d810c8e6b",
+            "e6cda85730a723577668a99444c58abba5200d8d15a22ae5192e8fca3f5d7303",
+            "b6cb17a5844eb88e1678e3cd74924c165a7f490f4919c955bf5a85a19840ba6d",
+            "bdc6d1d6e53915d69fd13593a7c0a04a103b4b3871b7e334084d49fadc149bc1",
+            "40fcc42a41d00afeb05cfa74f5e1fca7bad531f25c5f7962a45475a2566522d7",
+            "4fe4f3711ced5d6aee2b656deda413babc1dfb9de0456e8f69e0f2acb041e24c",
+            "c44610fd1a5252d090622ffb1d4895eb0f35c40dc1807e096f5b6b8aa3ac4cad",
+            "7a231f6b9f7e0554c0a06dfd61d312c70a06670c2f84f9b201e6e1ced3616b57"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 6265,
+          "input_count": 16,
+          "input_hashes": [
+            "d446cda638da1cf6db04e23a67c32c7afca7cab1d9809b1e51725d5518ee3e47",
+            "b1537cee6e65be5291e520e0e08880bdf85e6976238e554bca87df36ffe76cf0",
+            "985d717bf2e4317c418607a9097d43ef018e704c64c30221b5fedc7d24ee8e14",
+            "a7032660d21b46b2e54e93be7e95c22b4b1aa806d08d1f73591495fb14d99851",
+            "cdf963487d86a083fef9b4fafb14ae136d6e49420ecef899e04309b6635a39ff",
+            "c880801ff037b10ec78cd8335bbdd1be966e9d42361c02fccde5311055942c4c",
+            "a639690c1a67eeb9ce91bf0c87a2fc0f819435035f14ea13aefb515959ec2dae",
+            "33a6ea4026db6b2566ec419cc35f4f7c150ae4ab0e891b5232e204d22b3bd28f",
+            "b97b5d8c36ec0335fe10147408123cd30f46efffe02a3c7f361d1296c0e19d58",
+            "c8228e96c2dfa30538bc5e932fb270d1b72bf8b982c7a08fc9ffc07cddfabaac",
+            "313fd2c114902b1422647b837434a184d3e3642322e86683c9b388026cd85fea",
+            "6de1f5fcf8ea76b2e24f5232f4da4d027f1a8a466047e53e7cfbef3ea7dd6ddd",
+            "ba284ddcd0a28fff23e0706b95db83210675d0cad43693a9b9733c0ec8654a52",
+            "88105d74141119c72f747f21cc664e8530bd857a5cdb0dcede297555d4de524f",
+            "a209210b4d1be6290d05a5f2e235a874e15431f08a9527e8f2a63e856fa44b32",
+            "b8d7a959ab9ce54a1c6685b90dee0add744c0cbccea8f0a326b01f74946574f4"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 7148,
+          "input_count": 16,
+          "input_hashes": [
+            "5a0f580d72b84820d8feefaad97dbc0aa015fee294dc800fd6226e24d69fa9c4",
+            "021a6db48dfa30836b94e2dc71b35b55e84208b411f0c9597f5ad8a62520bde7",
+            "2f30a675a04f9ad43398317964a9995db0e42d7a6e58333b1da1aca3810f3b83",
+            "eb74e2537bdd745ce1a1ef2e5fa457b3488ca3416e361c6d7f693f388cef9f1b",
+            "e1ed5ee45acf1137dbc9701e1dba20ca08a81e13ab4a1dfe9ce8b9654b48a2c8",
+            "cc3c297115b220eb1feac1d7ddf65898f32c8f97d6010bb66befeb95cf4bfb8f",
+            "863f298fae4d5c1e1cae928f80eb54934f22232d173a3fbad96ed8b8c8f2d2e6",
+            "2d4f8b1a35b7bbc78a20675142cee2190658a434ab6cd7cbfbe75497cbf2c060",
+            "a7ecbe7e723643b9a798af74d13230489738c840d8f5daf9ed84851c1e1fae1e",
+            "1bfb93a1c20f887df393325be7ac274b4ac6a5517fc2f6d1a834036f6f970beb",
+            "42e98fe22f7cf9f8a2901ab7b4e4f0352a19ee2113f07d002c295dd7c2c012f4",
+            "11db8b53c3702efd90b648c05c12138f0d785a303f035a05e2f55090765f57dd",
+            "fbfcfa717507ea4942b5c9f76e891c791c8de028ced1d5b73e84866bf5792ece",
+            "b3c9bff79703b1c0b1c3774fb869432cb3cb81786654ebeb7f1b3def1446bd17",
+            "8229aa838da0e15a91bc6d49094b0ae7b9c6491203934ca4df4d33e27e89e547",
+            "2e515fc8df0e96845317d400c08e2cb00343cb7362a7f867f578327c9f077465"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 6176,
+          "input_count": 16,
+          "input_hashes": [
+            "6b854cabf597d5b41cf5a51da500c60c13130df58a2cc8dfe027d3e5d05dfdec",
+            "81965e576c67745fc746d5b7451d79f0a9e78512cce3eae5c46316e8f1efb4c4",
+            "28355a7b9ba03c370f4dc52b3f15d3c34d19715a16f11b37e283ecb3572d166f",
+            "43a363c171088fc3fe75395f8efcbbaad0b62c686f6e96fe2418186e8a2ca96d",
+            "2038e90bba61902a89cd94f74dc3e56e000058395844152461153ee673c98dbf",
+            "337a221a8280d532493a39dd758004fb9ccf70bddaa57f53fbc0adb08b40818c",
+            "9ef392f47aa0ba552b90998ae81460a308a1b149d92a326432e754623b1dcddd",
+            "c5aa1db13f6586945cb7e4d07ecb34969cfe1ba6eaa64d0bcff9ca7946c9ea05",
+            "2bd6dbcfc9208c340c02f4af53f91cd0ac2515a281cbf8620bad9f9b7c206fef",
+            "3514d247ca30735487dbd326af4e431d24688cf357a9ff9139340b189392385c",
+            "a188f2f5367805cec7940513f6d87c474f472564e7ed378d8ae3afc9b2fad963",
+            "808922e166ef8a32179f891dbfaeb28cdf61da24c5cfafce4f6957376f4578f7",
+            "affc7aaeeb755d71b348a4cec47318452f5e479ba77a21da0bb9f980d439a941",
+            "ac7db1693cd4d73e224be4ce3a40cf270cf9400c0b5d84824c58a9f16be84e05",
+            "0245e2f931a20cea565f7a1a92f5444df21038cb38de78a3db7ec385a3cf2a43",
+            "1323a482fd09fe822b5e2a0b7f0d7ca942808e153fd88817a164700c64a5ddca"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 6607,
+          "input_count": 16,
+          "input_hashes": [
+            "436ec3e005c899ac60004f179906b43afd69cebf7f7948721ab745daad2fc772",
+            "484f6244f93ca38b096273e95dbd7f931f6de410a4955db730773691b73f42e5",
+            "8ff5b35ad30926d6e18ac2a909f2831099914ac6649818987b4d3d49ebf8727f",
+            "c23fbaf9d5870b7653c9ce49654bab4eb84501e15071f2ce35abcd5e0a7040d2",
+            "06a61b521b6fef3b96fc9131efae83b01fa4ac11775c50fcc798d3bf7e522103",
+            "63a704f7464412bc17443952b7938be04b9df7ff635c436d967b5ff4594bd7fd",
+            "f19c32e1f7a25da9f0c67f6043bdb157edab4fb3e1f92b4e19d7c2c2da0c6fa6",
+            "5d8de7b883d9705bc673cb942b7c8103d22c6b607c3cf797f2c68451581abec1",
+            "1ca235f7e9b232a38efed10dc73ab0c844bd449ebde96e3546fcd0792b9eba97",
+            "11e1aee5c7950c91029b1e542c3d43c796d2f92053165ffea9faf918a204cf0f",
+            "1277c399d9237dfdcb942b4fcb5bb8b3ed4ebbb18298b797c0e613b3ce56f67a",
+            "82af30408f312ded2947d9d4e4d61808776eac9460115eb1ebe545413de38176",
+            "bb5a2f6e6c9176992e90c00f70cdecf3e07816416c2ff3e8d5d509fed51aad98",
+            "b0a2d99b22c24d9c6312213c433b53e9b8d6589fdf2bfbb4bf1ac1ff2cb96378",
+            "340e8881f3450d818aee0a1237657bad383acce9d8ad997b6aca213edcb008f0",
+            "75216f5dbc2dee85ef825eec772911f8e0bd7cb0b52adb68879242180e2b3483"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 6068,
+          "input_count": 16,
+          "input_hashes": [
+            "73ecfae1dbca0f597240643dfc1d4bcab3c75077a169d62fae8bd58b88448023",
+            "6bcc2aba8833b4d6b6aad8e26c781448e8099c6da87f477959de56b5b496dad4",
+            "dfdfe94aa5aa4c2e76d1cd50a29b0dd5d9c57955ed2a440c9680ae167000bf71",
+            "c13c8ff822949f20c7ff5cafc1cd843e9b81e12d784c7665d4b80d7f0c668308",
+            "0d6b76601804219fb512528c65126e7e8ad1f91d592bedd40484e14454207eb6",
+            "a2089958d64c7060f6f116f50dceeb545fdf54102f8148b1cc7da36d751f0b55",
+            "b96fe9d844ddd6e70e6cea35f8346985cb04e11fef24ebfaaa7c747e3deeba18",
+            "d16e2d63260f3b01fd3beb630d42f071a2e0c86ab748b8e5c06d2455ef27dd2f",
+            "6fc8fdf03e69e0a0612de49ccee29d342f116a2a7a430575ffdad6e46af5bd8b",
+            "a208e973415f0a36f019dcce384bfe75a8ec860d0c6a904996de8b3b5f1375bd",
+            "ecaf14f563173b0debe069b7b86b902f9c83396ed35f200f74040b3a3c4e8de1",
+            "ca8385aa6a97222048fb08ce0d2fb897d48a851601c9ffdce061a14a35ef3ce9",
+            "21321f56ae588de17479f720ffb44282737ba491d66d05572766dc5f7cba0d16",
+            "64fde339ddc3e60163ec271c23c0261127145e1eef9d55e76d038707547e8fda",
+            "8c261d69e444e483994ee31abef15985dc5e916bbefe923a0f21c4b4f3e2264d",
+            "c5674d10dc501efe8c6a1478a726eed1a5eeddf2268f4e4539d29ce3a211f1dd"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        },
+        {
+          "actual_input_tokens": 4822,
+          "input_count": 11,
+          "input_hashes": [
+            "bf312187910c1d9a93e6f43da3bace0d728c2ffbde452f8df77c6444ffb7dc40",
+            "5ce97f8b8847771dc2b362b1243056e045c947a4668ac5d8cd331edc6091c48d",
+            "07a63904e6d4a5f39a52c359e3498816f422ab3742cad66e5e3e16010d794293",
+            "de7b6349a3912f51a44dc2d3f746817ea8ab607d6c430186eb8906e1c355d809",
+            "9bb33be7cc7ffe06f8b946093828368f317a61cacdb23c2b8e351406d7e5f870",
+            "dbcb928a5dfa8db954acbc1910d968983d3a3fcddb6a8e0fa39f7264c2deb099",
+            "72b753b7f1144d72f7839a5dd430f238643a5bf239535d7ff1efb7479e09672b",
+            "00a0e54aaf6934a38d61d258819b32b758ba0bc755277e01f37d0d344cbf6282",
+            "ef80e200bae021d2bfd88929712c6c3f7bd4605b9cfa0a4eadf7cac63c4670fb",
+            "a849590d1e0d3a40f777f281e4568390efab07a4c811659e6eb83aaa10629c5e",
+            "5f4d7dad6c8f91d2d4b8a892e1be0887f408d714bf6a14036698b2156a9965c0"
+          ],
+          "requested_model": "text-embedding-3-small",
+          "response_model": "text-embedding-3-small"
+        }
+      ]
+    },
+    "metadata_only_reingestion": {
+      "actual_input_tokens": 0,
+      "completed_inputs": 0,
+      "planned_inputs": 0
+    },
+    "requested_model": "text-embedding-3-small",
+    "response_models": [
+      "text-embedding-3-small"
+    ],
+    "two_chunk_edit": {
+      "actual_input_tokens": 734,
+      "completed_inputs": 2,
+      "input_hashes": [
+        "0d864551584cb8a2b40ad72540be4df1597dff43a61e5acf4b85a47e21788f40",
+        "ddfa62b22b1ecd6b36ac8dc8f7bdbd136401bde6db4e27212cab5ee425143346"
+      ],
+      "main_vector_store_modified": false,
+      "planned_inputs": 2,
+      "requested_model": "text-embedding-3-small",
+      "response_model": "text-embedding-3-small"
+    },
+    "unchanged_reingestion": {
+      "actual_input_tokens": 0,
+      "completed_inputs": 0,
+      "planned_inputs": 0
+    }
+  },
   "evidence_boundaries": {
+    "answer_factuality_human_reviewed": false,
+    "api_key_recorded": false,
+    "citation_claim_support_human_reviewed": false,
+    "independently_reproduced": false,
     "live_openai_embeddings_verified": true,
     "live_openai_generation_verified": true,
     "local_store_persistence_verified": true,
-    "api_key_recorded": false,
-    "raw_source_text_recorded": false,
-    "vectors_recorded": false,
+    "per_request_token_counts_and_input_hashes_recorded": true,
     "provider_billing_dashboard_verified": false,
-    "citation_claim_support_human_reviewed": false,
-    "answer_factuality_human_reviewed": false,
-    "independently_reproduced": false
+    "raw_source_text_recorded": false,
+    "requested_and_response_models_recorded": true,
+    "vectors_recorded": false
   },
-  "local_ignored_run_ids": {
-    "ingestion": "b3a703ee2d454355a212c4f05738f349",
-    "unchanged": "512e94a823334dc39405df28199ad347",
-    "metadata_only": "ac50a8d07d3347489cd71812f9cf6988",
-    "answer": "41084fa7e7924e41b13b8fae6dc4e5ac"
+  "executed_on": "2026-09-23",
+  "index_readback": {
+    "ids_checked": 171,
+    "passed": true,
+    "payloads_checked": 171,
+    "vector_readback_passed": true
   },
   "limitations": [
-    "One three-document corpus and one question do not establish retrieval quality.",
+    "One three-document corpus does not establish retrieval quality or production reliability.",
     "Successful API responses do not verify provider billing or historical model provenance.",
-    "Citation labels identify retrieved chunks; support and factuality still require review."
-  ]
+    "Citation labels identify retrieved chunks; human support and factuality review remains outstanding.",
+    "The page-2 omission changed retrieval and citations but did not remove enough evidence to force abstention."
+  ],
+  "local_ignored_run_ids": {
+    "edit": "56737199f835430793d80d56f26e4cda",
+    "initial": "8f4204bef935481bba56a097c1955311",
+    "metadata": "162fa9456a694495a9a141e985458ff9",
+    "omission": "d28ab030d0e041b19b5275781da98fca",
+    "unchanged": "11d3ce175144433eabdba296bc40884d"
+  },
+  "omission_comparison": {
+    "causal_answer_loss_human_reviewed": false,
+    "damaged_clone_answer": "The original RAG formulation combines:\n\n1. **Parametric memory** \u2014 the generator\u2019s learned parameters (BART).\n2. **Non-parametric memory** \u2014 an external document index used for retrieval.\n\nThis is stated explicitly in the paper\u2019s description of RAG as having \u201caccess to parametric and non-parametric memory\u201d [1].",
+    "guarded_answer": "The original RAG formulation combines **parametric memory** in the generator with **non-parametric memory** in an external document index or retriever [1][2].",
+    "guarded_index_preserved": true,
+    "guarded_update_rejected": true,
+    "live_query_embedding_calls": 1,
+    "observed_result": "Retrieval and citation sets changed, but the answer remained available from other indexed pages.",
+    "removed_page": {
+      "removed_chunk_count": 3,
+      "source_id": "2005.11401v4.pdf",
+      "unit": "page:2"
+    }
+  },
+  "proof_kind": "bounded_live_openai_reference_run",
+  "questions": [
+    {
+      "answer": "The original RAG formulation combines **parametric memory**\u2014knowledge stored in the generator\u2019s parameters\u2014and **non-parametric memory**\u2014knowledge stored in an external document index [1][2].",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [
+        1,
+        2
+      ],
+      "input_tokens": 1998,
+      "output_tokens": 43,
+      "question": "What two kinds of memory does the original RAG formulation combine?",
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:9"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:2"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:7"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:10"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:5"
+          ]
+        }
+      ]
+    },
+    {
+      "answer": "The **lost-in-the-middle effect** is the tendency of language models to use relevant information in long input contexts less effectively when that information appears in the middle. Performance is typically highest when the relevant information is near the **beginning** or **end** of the context\u2014reflecting primacy and recency biases\u2014and drops substantially when it is located in the middle [1][3][5].\n\nIt has been observed in tasks such as multi-document question answering and key-value retrieval, including in models designed for long contexts [1].",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [
+        1,
+        3,
+        5
+      ],
+      "input_tokens": 2371,
+      "output_tokens": 111,
+      "question": "What is the lost-in-the-middle effect for language models?",
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2307.03172v3.pdf",
+          "units": [
+            "page:1"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:14"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2307.03172v3.pdf",
+          "units": [
+            "page:7"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2307.03172v3.pdf",
+          "units": [
+            "page:11"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2307.03172v3.pdf",
+          "units": [
+            "page:1"
+          ]
+        }
+      ]
+    },
+    {
+      "answer": "Self-RAG does not simply retrieve passages for every input. It learns to **retrieve on demand**, generate using the retrieved passages, and apply fine-grained self-reflection to judge passage relevance and whether its own output is supported [2][3][4].\n\nWhen retrieval is used at test time, performance improves substantially compared with no retrieval: in the reported ablation, \u201cNo retrieval\u201d scores **24.7, 73.0**, whereas retrieving the top passage scores **41.8, 73.1, and 28.6** across the listed metrics [1]. However, always imposing retrieval constraints is not optimal: \u201cHard constraints\u201d scores **28.3 and 72.6**, while the full SELF-RAG model reaches **45.5, 73.5, and 32.1** [1]. This suggests that SELF-RAG benefits from **adaptive retrieval plus self-reflection**, rather than retrieval being forced uniformly.\n\nSELF-RAG also filters irrelevant passages through self-reflection and evaluates factual support, without requiring external models at inference [3]. Removing the support-reflection component (\u201cRemove ISSUP\u201d) lowers performance relative to the full model in the reported results [1].",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "input_tokens": 1754,
+      "output_tokens": 464,
+      "question": "How does Self-RAG change when retrieval is used?",
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:9"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:10"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:3"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:10"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:5"
+          ]
+        }
+      ]
+    },
+    {
+      "answer": "I cannot answer from the supplied papers. None of the passages describes a university parking policy.",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [],
+      "input_tokens": 2304,
+      "output_tokens": 22,
+      "question": "What is the university parking policy?",
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:30"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:13"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:22"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2310.11511v1.pdf",
+          "units": [
+            "page:21"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:14"
+          ]
+        }
+      ]
+    }
+  ],
+  "scenario_status": {
+    "first_ingestion": "live",
+    "four_question_set": "live",
+    "metadata_only_reingestion": "live",
+    "omission_comparison": "live",
+    "out_of_scope_abstention": "live",
+    "two_chunk_edit": "live",
+    "unchanged_reingestion": "live"
+  },
+  "schema_version": 2
 }

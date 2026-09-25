@@ -21,6 +21,10 @@ license = "MIT"
 license-files = ["LICENSE"]
 dependencies = []
 
+[project.urls]
+Repository = "https://github.com/ShyamSundar29/rag-preflight"
+Documentation = "https://github.com/ShyamSundar29/rag-preflight/tree/main/rag-preflight/docs"
+
 [project.scripts]
 rag-preflight = "rag_preflight.cli:main"
 

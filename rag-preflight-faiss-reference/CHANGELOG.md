@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased)
 
+- Add clone-safe source installation, pinned corpus fetching, MIT licensing,
+  clean-checkout CI, response-model evidence, and a live selective-edit command.
 - Record a sanitized bounded live OpenAI/FAISS acceptance run without API keys,
   request IDs, raw paper text or vectors.
 - Report tokenizer host/cache recovery instructions for restricted networks and

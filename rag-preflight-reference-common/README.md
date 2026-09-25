@@ -8,9 +8,11 @@ small `VectorStore` protocol in `store.py`; their separate projects own storage,
 index semantics and dependencies.
 
 This package is a maintenance boundary, not a general vector-store SDK or a
-production deployment abstraction. The offline tests in each application still
-exercise its actual adapter. Live OpenAI calls remain unverified until a local
-API key and generation model are configured.
+production deployment abstraction. The offline tests in each application
+exercise its actual adapter. The sibling applications also ship bounded,
+sanitized evidence from a completed OpenAI acceptance run. Those records cover
+the pinned fixture; they do not establish broad retrieval quality or production
+reliability.
 
 Third adapters can run `assert_vector_store_contract(factory)` from
 `rag_preflight_reference_common.testing`. The factory receives a `create` boolean

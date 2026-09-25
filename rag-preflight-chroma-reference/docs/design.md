@@ -16,14 +16,14 @@ helpers and optional Office extras do not add OpenAI or Chroma to its core.
 |---|---|---|
 | R1 | Independently enumerate exact supported PDF scope before extraction. | Pinned manifest, page counts, hash checks; missing-source test. |
 | R2 | Fail before paid API or vector mutation on missing/failed units and bad chunks. | Extraction receipts, `audit_ingestion`, `audit_chunks`, omission test. |
-| R3 | Embed only guarded `plan.embed_ids`, with request-boundary usage evidence and budget. | Cost estimate, embedding audit, event log, metadata-only/no-op tests; live call pending. |
-| R4 | Store explicit text, metadata and vectors in persistent Chroma; reopen/read back all three. | Complete ID/payload/vector checks, drift test, live run pending. |
+| R3 | Embed only guarded `plan.embed_ids`, with request-boundary usage evidence and budget. | Cost estimate, embedding audit, event log, metadata-only/no-op tests and bounded live calls. |
+| R4 | Store explicit text, metadata and vectors in persistent Chroma; reopen/read back all three. | Complete ID/payload/vector checks, drift test and bounded live read-back. |
 | R5 | Keep Chroma apply and SQLite commit ordered, journaled and recoverable. | Upsert-verify-delete-verify-commit sequence; interruption and post-commit repair tests. |
 | R6 | Compare naive omission with guarded rejection without harming main index. | Isolated cloned Chroma collection; page:2 scenario. |
-| R7 | Ask with real query embeddings, retrieved paper/page labels and limited OpenAI generation. | `ask` command and question bank; live model/citation review pending. |
+| R7 | Ask with real query embeddings, retrieved paper/page labels and limited OpenAI generation. | `ask` command and live question-bank run; human citation review pending. |
 | R8 | Maintain separate configuration, state, evidence and dependency versions. | `requirements.lock`, run artifacts, ignored state, operator review. |
 | R9 | Present offline evidence without suggesting semantic retrieval proof. | Curated run checks, per-row simulated labels, no simulated distances. |
-| R10 | Expose a selective text-edit plan and future same-question omission comparison. | Synthetic two-chunk preview, clone verification, shared query; real answer impact pending. |
+| R10 | Expose a selective text-edit plan and same-question omission comparison. | Live synthetic two-chunk clone and live shared-query comparison; causal interpretation remains human-reviewed. |
 
 ## Apply state machine
 

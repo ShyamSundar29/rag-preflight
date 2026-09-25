@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased) — shared application pipeline update
 
+- Add clone-safe source installation, pinned corpus fetching, MIT licensing,
+  clean-checkout CI, response-model evidence, and a live selective-edit command.
 - Record a sanitized bounded live OpenAI/Chroma acceptance run without API keys,
   request IDs, raw paper text or vectors.
 - Rename the application root variable to `RAG_PREFLIGHT_CHROMA_ROOT`; temporarily

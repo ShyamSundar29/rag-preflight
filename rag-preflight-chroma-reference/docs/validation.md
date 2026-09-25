@@ -1,4 +1,14 @@
-# Validation status - 2026-09-15
+# Validation status - 2026-09-23
+
+The latest bounded live acceptance run completed the full four-question bank,
+including a correct abstention for the unrelated parking-policy question. It also
+performed exactly two OpenAI embedding inputs for an isolated synthetic two-chunk
+edit. Requested and returned model names, per-request token counts and input
+hashes are retained in the sanitized live evidence. The 11 initial embedding
+requests total 171 inputs and 67,083 tokens. A live guarded-versus-omission query
+changed retrieval and citations; it did not remove the answer because another
+indexed page contained sufficient evidence. Human citation and factuality review
+remains outstanding.
 
 Local PDFs passed file-magic, SHA-256, `pdfinfo` page-tree, pypdf text extraction
 and rendered first-page title/version checks. Counts: 19, 18 and 30 pages;
@@ -87,11 +97,9 @@ estimated at the supplied $0.02/M, with zero API calls. It updates metadata for
 the edited source's chunks, so planned upserts exceed embeddings; vector reuse
 remains explicit. The PDFs and vector store were not modified.
 
-The application now has a same-query guarded/omission-clone comparison command,
-tested with a simulated provider. It verifies both index states, shares one query
-embedding, and omits simulated distances. No live comparison was run. The API key
-is still absent and the generation model is intentionally unselected, so measured
-OpenAI tokens, real vector read-back and real answer impact remain pending.
+The application also retains an offline same-query guarded/omission-clone test
+using a simulated provider. The bounded live comparison and measured OpenAI
+request evidence are recorded separately in `live-openai-evidence.json`.
 
 A later focused regression injects a failure on embedding batch two. The first
 16 vectors and measured tokens remain in the journal, neither Chroma nor the ledger

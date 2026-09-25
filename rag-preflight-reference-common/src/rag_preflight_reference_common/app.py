@@ -54,8 +54,8 @@ class ReferenceApp:
     def committed_path(self) -> Path:
         return self.settings.state_root / 'committed-payloads.json'
 
-    def preview_text_edit(self, source_id: str, *, edited_chunks: int = 2) -> dict[str, Any]:
-        """Plan-only synthetic two-chunk edit; does not assert a PDF was edited."""
+    def _synthetic_text_edit(self, source_id: str, edited_chunks: int) -> tuple[
+            list[dict[str, Any]], Snapshot]:
         if type(edited_chunks) is not int or edited_chunks < 1:
             raise ValueError('edited_chunks must be a positive integer')
         candidate = prepare(self.settings)
@@ -96,6 +96,11 @@ class ReferenceApp:
                                   namespace=self.settings.namespace,
                                   pipeline_id=self.settings.pipeline_id,
                                   embedding_model=self.settings.embedding_model)
+        return rows, snapshot
+
+    def preview_text_edit(self, source_id: str, *, edited_chunks: int = 2) -> dict[str, Any]:
+        """Plan-only synthetic two-chunk edit; does not assert a PDF was edited."""
+        rows, snapshot = self._synthetic_text_edit(source_id, edited_chunks)
         with SQLiteSnapshotStore(self.ledger_path, read_only=True) as ledger:
             store = self.store_factory(self.settings, create=False)
             self._prior(ledger, store)
@@ -121,6 +126,93 @@ class ReferenceApp:
                 'cost_estimate': cost.to_dict(),
                 'checks_unverified': ['real_document_edit', 'live_openai_requests',
                                       'actual_provider_billing']}
+
+    def demonstrate_text_edit(self, provider: Provider, source_id: str, *,
+                              edited_chunks: int = 2) -> dict[str, Any]:
+        """Embed a synthetic selective edit in an isolated clone, never the main index."""
+        run_id = uuid4().hex
+        run_dir = self.settings.runs_root / run_id
+        run_dir.mkdir(mode=0o700, parents=True, exist_ok=False)
+        with writer_lock(self.settings.state_root):
+            if read_pending(self.settings.state_root) is not None:
+                raise ValueError('Recover pending operation before the selective-edit demonstration')
+            rows, snapshot = self._synthetic_text_edit(source_id, edited_chunks)
+            with SQLiteSnapshotStore(self.ledger_path, read_only=True) as ledger:
+                main = self.store_factory(self.settings, create=False)
+                prior = self._prior(ledger, main)
+                if not prior:
+                    raise ValueError('First ingest the complete three-paper corpus')
+                plan = ledger.plan(snapshot).update
+                if len(plan.embed_ids) != edited_chunks or plan.removed:
+                    raise ValueError('Synthetic edit did not produce the expected selective plan')
+                chunks = {stable_chunk_id(self.settings.namespace,
+                            row['metadata']['document_id'], row['chunk_key']): row for row in rows}
+                texts = [chunks[key]['text'] for key in plan.embed_ids]
+                encoding = encoding_for_model(self.settings.embedding_model)
+                counts = {key: len(encoding.encode(row['text'])) for key, row in chunks.items()}
+                cost = estimate_embedding_cost(plan,
+                    price_per_million_tokens=self.settings.embedding_price_per_million,
+                    currency='USD', token_counts=counts,
+                    comparison_ids=tuple(sorted(chunks)),
+                    comparison_scope='synthetic complete three-paper candidate batch')
+                if cost.estimated_cost > Decimal(self.settings.max_estimated_embedding_usd):
+                    raise ValueError('Estimated embedding spend exceeds experiment budget')
+                embedded = provider.embed(texts)
+                if len(embedded.vectors) != len(plan.embed_ids):
+                    raise ValueError('Provider returned a different number of selective-edit vectors')
+                states = {chunk.chunk_id: chunk for chunk in plan.target.chunks}
+                records = [dict(chunk_id=key, vector=vector,
+                                embedding_model=self.settings.embedding_model,
+                                pipeline_id=self.settings.pipeline_id,
+                                input_hash=states[key].text_hash)
+                           for key, vector in zip(plan.embed_ids, embedded.vectors)]
+                audit = audit_plan_embeddings(plan, records,
+                    dimensions=self.settings.embedding_dimensions, mode='embed')
+                audit.raise_for_errors()
+                atomic_json(run_dir / 'embedding-audit.json', audit.to_dict())
+                input_hashes = [text_hash(text) for text in texts]
+                append_event(run_dir / 'embedding-events.jsonl', {
+                    'stage': 'synthetic_selective_edit',
+                    'requested_model': embedded.requested_model,
+                    'response_model': embedded.response_model,
+                    'input_hashes': input_hashes, 'count': len(texts),
+                    'actual_tokens': embedded.actual_tokens,
+                    'request_id': embedded.request_id, 'successful': True})
+                replacement = dict(zip(plan.embed_ids, embedded.vectors))
+                target = {}
+                for key, row in chunks.items():
+                    vector = replacement.get(key)
+                    if vector is None:
+                        if key not in prior:
+                            raise ValueError(f'No reusable committed vector for {key}')
+                        vector = prior[key].vector
+                    metadata = self.metadata_builder({**row['metadata'],
+                                                      'chunk_key': row['chunk_key']},
+                                                     self.settings)
+                    target[key] = Payload(key, row['text'], metadata, tuple(vector))
+                clone = self.store_factory(self.settings,
+                    collection_name='edit_' + run_id[:20])
+                clone.upsert(list(prior.values()))
+                clone.upsert([target[key] for key in plan.upsert_ids])
+                clone_check = verify_payloads(clone, target, complete_ids=set(target))
+                main_check = verify_payloads(main, prior, complete_ids=set(prior))
+                if not clone_check['passed'] or not main_check['passed']:
+                    raise ValueError('Selective-edit clone or guarded main-index verification failed')
+                output = {'scenario': 'synthetic_selective_edit_live', 'run_id': run_id,
+                    'source_id': source_id, 'source_files_modified': False,
+                    'main_vector_store_modified': False, 'clone_vector_store_verified': True,
+                    'planned_embeddings': len(plan.embed_ids),
+                    'completed_embedding_inputs': len(embedded.vectors),
+                    'planned_upserts': len(plan.upsert_ids), 'proposed_deletions': 0,
+                    'actual_embedding_tokens': embedded.actual_tokens,
+                    'requested_model': embedded.requested_model,
+                    'response_model': embedded.response_model,
+                    'input_hashes': input_hashes, 'cost_estimate': cost.to_dict(),
+                    'checks_unverified': ['real_document_edit', 'actual_provider_billing'] +
+                        ([] if isinstance(provider, OpenAIProvider)
+                         else ['live_openai_embedding_calls'])}
+                atomic_json(run_dir / 'selective-edit.json', output)
+                return output
 
     def _prior(self, ledger: SQLiteSnapshotStore, store: VectorStore) -> dict[str, Payload]:
         recorded = json.loads(self.committed_path.read_text()) if self.committed_path.exists() else {}
@@ -235,6 +327,8 @@ class ReferenceApp:
                            * item['actual_embedding_tokens'] / Decimal(1_000_000))
             append_event(Path(item['run_dir']) / 'embedding-events.jsonl',
                 {'stage': 'ingestion', 'model': self.settings.embedding_model,
+                 'requested_model': result.requested_model,
+                 'response_model': result.response_model,
                  'input_hashes': [text_hash(text) for text in texts],
                  'count': len(keys), 'actual_tokens': result.actual_tokens,
                  'request_id': result.request_id, 'successful': True})
@@ -388,6 +482,8 @@ class ReferenceApp:
                 query_audit.raise_for_errors()
                 append_event(run_dir / 'embedding-events.jsonl',
                     {'stage': 'query', 'model': self.settings.embedding_model,
+                     'requested_model': query.requested_model,
+                     'response_model': query.response_model,
                      'input_hashes': [text_hash(question)], 'count': 1,
                      'actual_tokens': query.actual_tokens,
                      'request_id': query.request_id, 'successful': True})
@@ -414,6 +510,8 @@ class ReferenceApp:
                     generated = provider.answer(question, contexts)
                     append_event(run_dir / 'generation-events.jsonl',
                         {'model': self.settings.generation_model,
+                         'requested_model': generated.requested_model,
+                         'response_model': generated.response_model,
                          'input_tokens': generated.input_tokens,
                          'output_tokens': generated.output_tokens,
                          'response_id': generated.response_id, 'successful': True})
@@ -425,6 +523,8 @@ class ReferenceApp:
                         raise ValueError('Generated factual answer has no passage citation')
                     answer = generated.text
                     generation = {'called': True, 'model': self.settings.generation_model,
+                                  'requested_model': generated.requested_model,
+                                  'response_model': generated.response_model,
                                   'input_tokens': generated.input_tokens,
                                   'output_tokens': generated.output_tokens,
                                   'response_id': generated.response_id,
@@ -554,6 +654,8 @@ class ReferenceApp:
                 query_audit.raise_for_errors()
                 append_event(run_dir / 'embedding-events.jsonl',
                     {'stage': 'shared_comparison_query', 'model': self.settings.embedding_model,
+                     'requested_model': query.requested_model,
+                     'response_model': query.response_model,
                      'input_hashes': [text_hash(question)], 'count': 1,
                      'actual_tokens': query.actual_tokens,
                      'request_id': query.request_id, 'successful': True})
@@ -583,9 +685,13 @@ class ReferenceApp:
                         generation = {'called': True, 'input_tokens': generated.input_tokens,
                                       'output_tokens': generated.output_tokens,
                                       'response_id': generated.response_id,
+                                      'requested_model': generated.requested_model,
+                                      'response_model': generated.response_model,
                                       'claimed_citation_numbers': sorted(claimed)}
                         append_event(run_dir / 'generation-events.jsonl',
                             {'index': label, 'model': self.settings.generation_model,
+                             'requested_model': generated.requested_model,
+                             'response_model': generated.response_model,
                              'input_tokens': generated.input_tokens,
                              'output_tokens': generated.output_tokens,
                              'response_id': generated.response_id, 'successful': True})

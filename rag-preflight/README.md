@@ -74,15 +74,19 @@ python -m unittest discover -s tests -v
 ```
 
 Windows activation: `.venv\Scripts\activate`.
-The download also contains an installable wheel in the sibling `artifacts` directory:
+Release archives are not committed to this source repository. To build a local
+wheel explicitly:
 
 ```bash
+python -m pip install build
+python -m build --outdir ../artifacts
 python -m pip install ../artifacts/rag_preflight-0.1.0-py3-none-any.whl
 ```
 
-`artifacts` contains build outputs for convenience; it is not part of the source
-repository. The package is not published to PyPI. Repository/documentation URLs
-will be added to package metadata when those real locations exist.
+The ignored `artifacts` directory is created by that command; it is not part of
+the source repository. The package is not published to PyPI. Package metadata
+points to the current private repository and its tracked documentation; public
+availability remains pending the release decision.
 
 ## Capabilities
 

@@ -22,18 +22,24 @@ supported local test scope; Windows is unvalidated.
 
 ## Install and inspect without API calls
 
-From this directory, use a Python 3.12+ environment with the local unpublished
-library wheel available:
+From this directory, use Python 3.12+ and install the unpublished packages from
+the sibling source directories in the clone:
 
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock
-.venv/bin/python -m pip install --no-deps ../artifacts/0.1.0/rag_preflight-0.1.0-py3-none-any.whl
-.venv/bin/python -m pip install --no-deps ../artifacts/reference-common-0.1.0/rag_preflight_reference_common-0.1.0-py3-none-any.whl
+.venv/bin/python -m pip install --no-deps -e ../rag-preflight
+.venv/bin/python -m pip install --no-deps -e ../rag-preflight-reference-common
 .venv/bin/python -m pip install --no-deps -e .
+.venv/bin/python ../scripts/fetch_corpus.py
 .venv/bin/python -m rag_preflight_faiss_reference verify-papers
 .venv/bin/python -m rag_preflight_faiss_reference dry-run
 ```
+
+The corpus script downloads only the three versioned arXiv URLs in the pinned
+manifest, checks every SHA-256 and page count, and atomically publishes valid
+files under the ignored sibling `../pdfs/` directory. It refuses unexpected PDFs
+and mismatched existing files.
 
 Start with `rag-preflight check ../pdfs --expected corpus/expected-files.txt`
 when using the updated library wheel. Keep the independent list outside the
@@ -51,6 +57,8 @@ details without a raw proxy traceback. Estimated embedding cost uses a caller-su
 `--embedding-price-per-million` and `--embedding-budget-usd` before the command
 to reflect current prices and your limit. The default ingestion budget is $0.25;
 query embedding, generation, retries and network/database costs are outside it.
+Generation defaults to a 300-token output cap; use `--max-output-tokens` before
+the command when the selected model needs a larger explicit cap.
 
 ## Live end-to-end run
 
@@ -63,6 +71,7 @@ the dry-run and the model's current price, run:
 .venv/bin/python -m rag_preflight_faiss_reference ingest  # expected: zero new embeddings
 .venv/bin/python -m rag_preflight_faiss_reference ingest --metadata-tag reviewed
 .venv/bin/python -m rag_preflight_faiss_reference demonstrate-omission 2005.11401v4.pdf page:2
+.venv/bin/python -m rag_preflight_faiss_reference demonstrate-text-edit 2005.11401v4.pdf
 .venv/bin/python -m rag_preflight_faiss_reference ask \
   "What two kinds of memory does RAG combine?" --generation-model MODEL_ID
 .venv/bin/python -m rag_preflight_faiss_reference compare-omission OMISSION_RUN_ID \
@@ -78,6 +87,10 @@ so the omission comparison needs human review. The generation model remains
 caller-selected. The bounded 2026-09-21 acceptance run used `gpt-5.6-luna`;
 callers should select and evaluate the model appropriate for their own accuracy
 and cost requirements.
+
+`demonstrate-text-edit` modifies exactly two synthetic chunk inputs, embeds only
+those inputs, verifies an isolated clone, and leaves the PDFs, ledger, and main
+index unchanged. It proves selective API execution, not a real document edit.
 
 To test crash recovery, use an isolated `--state-root` and `--runs-root`, run
 `ingest --fail-after-upserts`, then `recover` and `verify-index`. The operation
@@ -106,11 +119,15 @@ factually supported. The three-paper corpus is a limited acceptance fixture,
 not an operational track record.
 
 The sanitized [live evidence](reviewed-results/live-openai-evidence.json) records
-a bounded 2026-09-21 run with 171 real `text-embedding-3-small` vectors, complete
+a bounded 2026-09-23 run with 171 real `text-embedding-3-small` vectors, complete
 FAISS payload/ID read-back, zero new embeddings for unchanged and metadata-only
-runs, and one `gpt-5.6-luna` answer. It excludes API keys, vectors, raw source text
-and request IDs. It does not verify provider billing, broad retrieval quality,
-citation support, factuality, or production reliability.
+runs, a live two-chunk selective edit, four `gpt-5.6-luna` answers including an
+out-of-scope abstention, and a live omission comparison. The omitted page changed
+retrieval and citations but other indexed evidence still supported the answer.
+The record includes requested and returned model names plus per-request token
+counts and input hashes. It excludes API keys, vectors, raw source text and request
+IDs. It does not verify provider billing, broad retrieval quality, citation
+support, factuality, or production reliability.
 
 Run `.venv/bin/python -m unittest discover -s tests -v` for local tests.
 The FAISS adapter also runs the reusable

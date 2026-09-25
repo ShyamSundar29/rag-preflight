@@ -11,6 +11,8 @@ class EmbeddingBatch:
     vectors: tuple[tuple[float, ...], ...]
     actual_tokens: int
     request_id: str | None
+    requested_model: str | None = None
+    response_model: str | None = None
 
 
 @dataclass(frozen=True)
@@ -19,6 +21,8 @@ class Answer:
     input_tokens: int | None
     output_tokens: int | None
     response_id: str | None
+    requested_model: str | None = None
+    response_model: str | None = None
 
 
 class Provider(Protocol):
@@ -45,7 +49,11 @@ class OpenAIProvider:
         actual = response.usage.total_tokens
         if type(actual) is not int or actual < 0:
             raise ValueError('OpenAI embedding usage is missing')
-        return EmbeddingBatch(vectors, actual, getattr(response, '_request_id', None))
+        response_model = getattr(response, 'model', None)
+        if not isinstance(response_model, str) or not response_model:
+            raise ValueError('OpenAI embedding response model is missing')
+        return EmbeddingBatch(vectors, actual, getattr(response, '_request_id', None),
+                              self.settings.embedding_model, response_model)
 
     def answer(self, question: str, contexts: list[tuple[str, str]]) -> Answer:
         if not contexts:
@@ -62,12 +70,18 @@ class OpenAIProvider:
                           'Do not invent paper titles, page numbers or citations.'),
             input=f'Question: {question}\n\nPassages:\n{context}')
         if response.status != 'completed':
-            raise ValueError(f'OpenAI generation did not complete: {response.status}')
+            details = getattr(response, 'incomplete_details', None)
+            reason = getattr(details, 'reason', None)
+            suffix = f' ({reason})' if isinstance(reason, str) and reason else ''
+            raise ValueError(f'OpenAI generation did not complete: {response.status}{suffix}')
         usage = response.usage
+        response_model = getattr(response, 'model', None)
+        if not isinstance(response_model, str) or not response_model:
+            raise ValueError('OpenAI generation response model is missing')
         return Answer(response.output_text,
                       None if usage is None else usage.input_tokens,
                       None if usage is None else usage.output_tokens,
-                      response.id)
+                      response.id, self.settings.generation_model, response_model)
 
 
 def text_hash(value: str) -> str:

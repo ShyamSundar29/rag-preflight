@@ -1,0 +1,79 @@
+name: reference applications
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  common:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install build mypy
+      - run: python -m pip install -e rag-preflight -e rag-preflight-reference-common
+      - run: python -m unittest discover -s rag-preflight-reference-common/tests -v
+      - run: python -m mypy rag-preflight-reference-common/src/rag_preflight_reference_common
+      - run: python -m build rag-preflight-reference-common --outdir "${RUNNER_TEMP}/common-dist"
+
+  clean-clone:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - application: Chroma
+            directory: rag-preflight-chroma-reference
+            module: rag_preflight_reference
+          - application: FAISS
+            directory: rag-preflight-faiss-reference
+            module: rag_preflight_faiss_reference
+    name: clean clone (${{ matrix.application }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Export tracked repository
+        run: |
+          mkdir "${RUNNER_TEMP}/rag-preflight-export"
+          git archive HEAD | tar -x -C "${RUNNER_TEMP}/rag-preflight-export"
+      - name: Install from clone instructions
+        working-directory: ${{ runner.temp }}/rag-preflight-export/${{ matrix.directory }}
+        run: |
+          python -m pip install -r requirements.lock build mypy
+          python -m pip install --no-deps -e ../rag-preflight -e ../rag-preflight-reference-common -e .
+      - name: Fetch and verify pinned corpus
+        working-directory: ${{ runner.temp }}/rag-preflight-export/${{ matrix.directory }}
+        run: |
+          python ../scripts/fetch_corpus.py
+          python -m ${{ matrix.module }} verify-papers
+          python -m ${{ matrix.module }} dry-run
+      - name: Test and type-check application
+        working-directory: ${{ runner.temp }}/rag-preflight-export/${{ matrix.directory }}
+        run: |
+          python -m unittest discover -s tests -v
+          python -m mypy ../rag-preflight-reference-common/src/rag_preflight_reference_common src
+          python -m pip check
+      - name: Build application distribution
+        working-directory: ${{ runner.temp }}/rag-preflight-export
+        run: python -m build ${{ matrix.directory }} --outdir "${RUNNER_TEMP}/${{ matrix.directory }}-dist"
+
+  corpus-downloader:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'pypdf>=5,<7'
+      - run: python -m unittest scripts/test_fetch_corpus.py -v

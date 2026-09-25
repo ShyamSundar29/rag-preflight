@@ -20,6 +20,25 @@ writes.
 Each package keeps its own README, changelog, tests, build metadata, and version.
 All remain at version 0.1.0 and unreleased.
 
+## Clone quickstart
+
+The reference corpus is public but intentionally not committed. From a clone,
+create an application environment, install all local packages from source, then
+download and verify the exact versioned PDFs:
+
+```sh
+python3.12 -m venv rag-preflight-chroma-reference/.venv
+rag-preflight-chroma-reference/.venv/bin/python -m pip install -r rag-preflight-chroma-reference/requirements.lock
+rag-preflight-chroma-reference/.venv/bin/python -m pip install --no-deps -e rag-preflight -e rag-preflight-reference-common -e rag-preflight-chroma-reference
+rag-preflight-chroma-reference/.venv/bin/python scripts/fetch_corpus.py
+rag-preflight-chroma-reference/.venv/bin/python -m rag_preflight_reference verify-papers
+rag-preflight-chroma-reference/.venv/bin/python -m rag_preflight_reference dry-run
+```
+
+The FAISS README gives the matching FAISS commands. Corpus setup downloads only
+the URLs in the pinned manifest and verifies SHA-256 and page counts before
+publishing each file under the ignored `pdfs/` directory.
+
 ## Repository boundaries
 
 Raw PDFs, virtual environments, API credentials, local vector state, run journals,

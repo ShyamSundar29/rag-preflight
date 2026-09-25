@@ -12,24 +12,24 @@ This project owns the Chroma adapter and its configuration; it does not import
 FAISS.
 
 **Platform scope: Python 3.12+ on macOS/Linux. Windows has not been validated.**
-The local writer lock uses `fcntl`. Real OpenAI embeddings and answers remain
-unverified until a local API key and an explicitly selected generation model are
-available.
+The local writer lock uses `fcntl`. The bounded live evidence described below
+uses real OpenAI embeddings and generation; it is acceptance evidence for this
+fixture, not a production reliability claim.
 
 The key comparison is at **re-ingestion**: a PDF page omitted downstream would
 otherwise remove its indexed chunks. `demonstrate-omission` deletes records only in
 an isolated clone and shows Preflight rejecting the same candidate before any API
 or write on the guarded collection. The main collection is verified afterward.
 
-The current **offline or plan-only** evidence is:
+The current bounded live and offline evidence is:
 
 | Scenario | New embedding inputs | Estimated embedding cost at caller-supplied $0.02/M | Evidence |
 |---|---:|---:|---|
-| First three-paper ingestion | 171 | $0.00134166 | Simulated vectors; exact tokenizer-input counts, no API billing |
-| Unchanged candidate | 0 | $0 | Simulated persistent Chroma and ledger |
-| Metadata tag only | 0 | $0 | Simulated vector reuse |
-| Hypothetical two-chunk text edit | 2 | $0.00001468 | Plan-only synthetic source version; PDF and index unchanged |
-| Page omitted downstream | 0 before rejection | $0 before rejection | Guard rejects faulty receipt; isolated clone loses 3 IDs |
+| First three-paper ingestion | 171 | $0.00134166 | Live OpenAI embeddings; 67,083 measured input tokens and complete read-back |
+| Unchanged candidate | 0 | $0 | Live run; persistent Chroma and ledger verified |
+| Metadata tag only | 0 | $0 | Live run; vectors reused |
+| Synthetic two-chunk text edit | 2 | $0.00001468 | Live OpenAI embeddings in an isolated clone; PDF and main index unchanged |
+| Page omitted downstream | 0 before rejection | $0 before rejection | Guard rejects faulty receipt; isolated clone loses 3 IDs; live comparison recorded |
 
 These costs exclude query embeddings, generation, retries, database and network
 work. A real paragraph edit may touch a different number of chunks and can shift
@@ -65,12 +65,19 @@ or set `RAG_PREFLIGHT_CHROMA_ROOT` to that folder):
 cd rag-preflight-chroma-reference
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock
-.venv/bin/python -m pip install --no-deps ../artifacts/0.1.0/rag_preflight-0.1.0-py3-none-any.whl
-.venv/bin/python -m pip install --no-deps ../artifacts/reference-common-0.1.0/rag_preflight_reference_common-0.1.0-py3-none-any.whl
+.venv/bin/python -m pip install --no-deps -e ../rag-preflight
+.venv/bin/python -m pip install --no-deps -e ../rag-preflight-reference-common
 .venv/bin/python -m pip install --no-deps -e .
+.venv/bin/python ../scripts/fetch_corpus.py
 .venv/bin/python -m rag_preflight_reference verify-papers
 .venv/bin/python -m rag_preflight_reference dry-run
 ```
+
+`fetch_corpus.py` is the clone-safe first-run step. It downloads only the three
+versioned arXiv URLs declared in the manifest, verifies each SHA-256 and page
+count, and atomically places valid files in the ignored sibling `../pdfs/`
+directory. It refuses unexpected PDFs and never silently replaces a mismatched
+existing file.
 
 Before adopting the application, the library's lower-friction front door can
 check the same independent source list: `rag-preflight check ../pdfs --expected
@@ -110,10 +117,12 @@ available to the process, then:
 .venv/bin/python -m rag_preflight_reference ingest --metadata-tag reviewed
 .venv/bin/python -m rag_preflight_reference demonstrate-omission 2005.11401v4.pdf page:2
 .venv/bin/python -m rag_preflight_reference preview-text-edit 2005.11401v4.pdf
+.venv/bin/python -m rag_preflight_reference demonstrate-text-edit 2005.11401v4.pdf
 ```
 
-The generation model is deliberately **not selected yet**. When chosen, pass its
-exact OpenAI API ID and check its current pricing and access before asking:
+Choose the generation model explicitly for every live question. The bounded
+acceptance evidence used `gpt-5.6-luna`; callers should pass the model appropriate
+for their own evaluation and check its current pricing and access before asking:
 
 ```sh
 .venv/bin/python -m rag_preflight_reference ask \
@@ -125,14 +134,20 @@ exact OpenAI API ID and check its current pricing and access before asking:
 The application embeds both indexed chunks and questions with
 `text-embedding-3-small`. It sends explicit vectors to Chroma, never delegates
 embedding to Chroma's embedding function. Generation uses OpenAI Responses with
-`store=False` and a 300-token output cap. The app records measured OpenAI token
+`store=False` and a configurable output cap that defaults to 300 tokens. Increase
+it explicitly with `--max-output-tokens` when a model reports an incomplete
+`max_output_tokens` response. The app records measured OpenAI token
 usage and request IDs when available. No API key or raw paper text is included in
 structured metrics or default event logs.
 `compare-omission` verifies the clone, embeds one shared question once, and uses
 the same query vector and generation model on both indexes. It records two
 retrieval/answer views. Another page may contain the answer, so the clone need
 not abstain; human review is required to establish the observed consequence.
-The live side-by-side is still pending.
+The selective-edit command changes two synthetic chunk inputs, calls the embedding
+provider only for those inputs, writes only to an isolated clone, and verifies the
+main index remained unchanged. It does not claim that the underlying PDF changed.
+The bounded live evidence includes this comparison; causal interpretation still
+requires human review because other indexed pages can contain the same answer.
 
 A write-interruption scenario is available with `ingest --fail-after-upserts`, but
 run it in a disposable state directory or after backing up local state. It leaves
@@ -174,18 +189,21 @@ review. Evidence is kept separately from Chroma so failed/replaced indexes do no
 erase the sequence of events. [Design and acceptance criteria](docs/design.md) and
 [local validation](docs/validation.md) state exactly which checks ran.
 
-The library is production **capable** as an ingestion guard. On 2026-09-21 this
+The library is suitable for controlled production evaluation as an ingestion guard. On 2026-09-23 this
 application completed a bounded live run with `text-embedding-3-small` and
 `gpt-5.6-luna`; the sanitized [live evidence](reviewed-results/live-openai-evidence.json)
 records 171 indexed chunks, complete read-back, zero embeddings on unchanged and
-metadata-only runs, and one citation-bearing answer. This single three-paper run
+metadata-only runs, a live two-chunk selective edit, all four fixed questions,
+an out-of-scope abstention and a live omission comparison. The omission changed
+retrieval and citations but did not erase the answer because another page still
+contained enough evidence. This single three-paper run
 does not establish retrieval quality, billing accuracy, production reliability,
 or independent adoption. The app assumes one local writer using an advisory file lock; external writers, source
 mutations and distributed deployments need their own coordination and recovery.
 Namespace consistency is not access control. Citation labels refer to retrieved
 passages, not verified answer factuality. Empty or weak retrieval should cause
-abstention, and the full fixed [question set](corpus/questions.json) still needs
-human-reviewed live evaluation. The live omission side-by-side also remains pending.
+abstention. Human citation-support and factuality review of the fixed
+[question set](corpus/questions.json) remains outstanding.
 Use the private wheel or source distribution for handoff. Both omit `.venv/`,
 `state/` and `runs/`; zipping the working folder directly would include those
 large local artifacts.

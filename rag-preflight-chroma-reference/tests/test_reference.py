@@ -12,7 +12,7 @@ import unittest
 from unittest import mock
 
 import tiktoken
-from rag_preflight import SQLiteSnapshotStore
+from rag_preflight import SQLiteSnapshotStore, stable_chunk_id
 from rag_preflight_reference.app import ReferenceApp
 from rag_preflight_reference.config import Settings
 from rag_preflight_reference.corpus import CandidateRejected, prepare
@@ -128,6 +128,30 @@ class CorpusTests(unittest.TestCase):
         self.assertFalse(boundaries['api_key_recorded'])
         self.assertFalse(boundaries['provider_billing_dashboard_verified'])
         self.assertFalse(boundaries['independently_reproduced'])
+        self.assertTrue(boundaries['requested_and_response_models_recorded'])
+        requests = evidence['embedding']['first_ingestion']['requests']
+        self.assertEqual(sum(row['actual_input_tokens'] for row in requests), 67083)
+        self.assertEqual(sum(len(row['input_hashes']) for row in requests), 171)
+        self.assertTrue(all(row['requested_model'] == 'text-embedding-3-small'
+                            for row in requests))
+        self.assertTrue(all(row['response_model'] == 'text-embedding-3-small'
+                            for row in requests))
+        settings = Settings.local()
+        candidate = prepare(settings)
+        chunks = {stable_chunk_id(settings.namespace, row['metadata']['document_id'],
+                                  row['chunk_key']): row for row in candidate.chunks}
+        texts = [chunks[key]['text'] for key in sorted(chunks)]
+        self.assertEqual([hashlib.sha256(text.encode()).hexdigest() for text in texts],
+                         [value for row in requests for value in row['input_hashes']])
+        encoding = tiktoken.encoding_for_model(settings.embedding_model)
+        self.assertEqual([sum(len(encoding.encode(text)) for text in texts[start:start + 16])
+                          for start in range(0, len(texts), 16)],
+                         [row['actual_input_tokens'] for row in requests])
+        self.assertTrue(all(status == 'live'
+                            for status in evidence['scenario_status'].values()))
+        self.assertEqual(evidence['embedding']['two_chunk_edit']['completed_inputs'], 2)
+        self.assertEqual(len(evidence['questions']), 4)
+        self.assertIn('cannot answer', evidence['questions'][3]['answer'].lower())
         values = []
         def collect(value):
             if isinstance(value, dict):
@@ -236,6 +260,11 @@ class ChromaIntegrationTests(unittest.TestCase):
             self.assertEqual(preview['paid_api_calls'], 0)
             self.assertFalse(preview['source_files_modified'])
             self.assertLess(float(preview['cost_estimate']['estimated_cost']), 0.00134166)
+            live_edit = app.demonstrate_text_edit(provider, '2005.11401v4.pdf')
+            self.assertEqual(live_edit['planned_embeddings'], 2)
+            self.assertEqual(live_edit['completed_embedding_inputs'], 2)
+            self.assertTrue(live_edit['clone_vector_store_verified'])
+            self.assertFalse(live_edit['main_vector_store_modified'])
             calls = provider.calls
             repeated = app.ingest(provider)
             self.assertEqual(repeated['planned_embeddings'], 0)

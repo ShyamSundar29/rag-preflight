@@ -2,6 +2,10 @@
 
 ## 0.1.0 (unreleased)
 
+- Record requested and API-returned embedding/generation model names.
+- Add an isolated live selective-edit scenario that embeds exactly the planned
+  inputs while preserving the guarded main index.
+- Add MIT license metadata and clone-safe repository packaging.
 - Add an actionable tiktoken proxy/offline-cache error and verified manual cache
   instructions for first-run environments that block the tokenizer host.
 - Add a reusable `assert_vector_store_contract()` utility and self-tests for new

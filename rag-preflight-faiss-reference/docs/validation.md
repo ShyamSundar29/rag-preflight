@@ -1,4 +1,4 @@
-# Validation status
+# Validation status - 2026-09-23
 
 The FAISS application is separate from the core library and the Chroma reference.
 Its pinned corpus is the same three local PDFs, 67 independently listed pages and
@@ -13,16 +13,19 @@ nine application source files. It now also runs the reusable shared adapter
 contract. The common package passes two self-tests covering that contract and the
 restricted-network tokenizer diagnostic. These are local results, not live provider proof.
 
-On 2026-09-21 a bounded live run used `text-embedding-3-small` and
+On 2026-09-23 a bounded live run used `text-embedding-3-small` and
 `gpt-5.6-luna`. Initial ingestion completed 171 inputs in 11 embedding requests
 with 67,083 measured input tokens. Complete read-back verified 171 IDs and
-payloads. Unchanged and metadata-only runs each performed zero embeddings. One
-question embedding used 10 tokens, and one Responses API call used 1,995 input
-and 40 output tokens. The answer cited retrieved passages 1 and 3. The sanitized
-record is `reviewed-results/live-openai-evidence.json`; it excludes API keys,
-request IDs, vectors and raw source text. Provider billing, citation support,
-factuality, broad retrieval quality, causal answer loss and production reliability
-remain unverified.
+payloads. Unchanged and metadata-only runs each performed zero embeddings. An
+isolated synthetic two-chunk edit completed exactly two embedding inputs. All four
+fixed questions ran live, and the unrelated parking-policy question correctly
+abstained. The omission comparison changed retrieval and citations but did not
+erase the answer because another page contained sufficient evidence. The sanitized
+record is `reviewed-results/live-openai-evidence.json`; it includes requested and
+returned model names, per-request token counts and input hashes, while excluding
+API keys, request IDs, vectors and raw source text. Provider billing, human
+citation support, factuality, broad retrieval quality, causal answer loss and
+production reliability remain unverified.
 
 The shared application-only package owns ingestion, provider requests, journal
 and CLI dispatch; this project owns the 120-line FAISS adapter and settings.
