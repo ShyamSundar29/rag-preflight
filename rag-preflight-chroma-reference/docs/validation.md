@@ -1,14 +1,15 @@
-# Validation status - 2026-09-23
+# Validation status - 2026-09-25
 
 The latest bounded live acceptance run completed the full four-question bank,
 including a correct abstention for the unrelated parking-policy question. It also
 performed exactly two OpenAI embedding inputs for an isolated synthetic two-chunk
 edit. Requested and returned model names, per-request token counts and input
 hashes are retained in the sanitized live evidence. The 11 initial embedding
-requests total 171 inputs and 67,083 tokens. A live guarded-versus-omission query
-changed retrieval and citations; it did not remove the answer because another
-indexed page contained sufficient evidence. Human citation and factuality review
-remains outstanding.
+requests total 171 inputs and 67,083 tokens. The page-2 comparison remained
+answerable from repeated page-9 evidence. A second live comparison removed page 4,
+whose 100-word chunking fact is unique in the extracted fixture: the intact index
+answered it, while the omission clone stated that its passages did not specify
+the answer. Human citation, factuality and causal review remains outstanding.
 
 Local PDFs passed file-magic, SHA-256, `pdfinfo` page-tree, pypdf text extraction
 and rendered first-page title/version checks. Counts: 19, 18 and 30 pages;

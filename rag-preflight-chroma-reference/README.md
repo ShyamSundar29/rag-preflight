@@ -78,6 +78,9 @@ versioned arXiv URLs declared in the manifest, verifies each SHA-256 and page
 count, and atomically places valid files in the ignored sibling `../pdfs/`
 directory. It refuses unexpected PDFs and never silently replaces a mismatched
 existing file.
+If a proxy blocks arXiv, the error names the exact URL, expected SHA-256 and
+destination path. Download that versioned file on an approved connected machine,
+copy it to the stated path, and rerun; existing valid files are verified offline.
 
 Before adopting the application, the library's lower-friction front door can
 check the same independent source list: `rag-preflight check ../pdfs --expected
@@ -115,7 +118,7 @@ available to the process, then:
 .venv/bin/python -m rag_preflight_reference verify-index
 .venv/bin/python -m rag_preflight_reference ingest  # repeat: expected 0 new embeddings
 .venv/bin/python -m rag_preflight_reference ingest --metadata-tag reviewed
-.venv/bin/python -m rag_preflight_reference demonstrate-omission 2005.11401v4.pdf page:2
+.venv/bin/python -m rag_preflight_reference demonstrate-omission 2005.11401v4.pdf page:4
 .venv/bin/python -m rag_preflight_reference preview-text-edit 2005.11401v4.pdf
 .venv/bin/python -m rag_preflight_reference demonstrate-text-edit 2005.11401v4.pdf
 ```
@@ -128,7 +131,8 @@ for their own evaluation and check its current pricing and access before asking:
 .venv/bin/python -m rag_preflight_reference ask \
   "What two kinds of memory does RAG combine?" --generation-model MODEL_ID
 .venv/bin/python -m rag_preflight_reference compare-omission OMISSION_RUN_ID \
-  "A question whose evidence is on the omitted page" --generation-model MODEL_ID
+  "How is each Wikipedia article split to build RAG's document index?" \
+  --generation-model MODEL_ID
 ```
 
 The application embeds both indexed chunks and questions with
@@ -143,6 +147,11 @@ structured metrics or default event logs.
 the same query vector and generation model on both indexes. It records two
 retrieval/answer views. Another page may contain the answer, so the clone need
 not abstain; human review is required to establish the observed consequence.
+In the pinned extracted fixture, the 100-word chunking fact appears on page 4.
+The live intact index answered with that fact, while the verified page-4 omission
+clone stated that its supplied passages did not specify the answer. The earlier
+page-2 comparison remains in the evidence as a useful counterexample: repeated
+evidence on page 9 kept that answer available despite the omission.
 The selective-edit command changes two synthetic chunk inputs, calls the embedding
 provider only for those inputs, writes only to an isolated clone, and verifies the
 main index remained unchanged. It does not claim that the underlying PDF changed.
@@ -189,14 +198,14 @@ review. Evidence is kept separately from Chroma so failed/replaced indexes do no
 erase the sequence of events. [Design and acceptance criteria](docs/design.md) and
 [local validation](docs/validation.md) state exactly which checks ran.
 
-The library is suitable for controlled production evaluation as an ingestion guard. On 2026-09-23 this
-application completed a bounded live run with `text-embedding-3-small` and
+The library is suitable for controlled production evaluation as an ingestion guard. Through 2026-09-25 this
+application completed bounded live runs with `text-embedding-3-small` and
 `gpt-5.6-luna`; the sanitized [live evidence](reviewed-results/live-openai-evidence.json)
 records 171 indexed chunks, complete read-back, zero embeddings on unchanged and
 metadata-only runs, a live two-chunk selective edit, all four fixed questions,
-an out-of-scope abstention and a live omission comparison. The omission changed
-retrieval and citations but did not erase the answer because another page still
-contained enough evidence. This single three-paper run
+an out-of-scope abstention, the redundant page-2 omission result, and a page-4
+unique-fact comparison whose damaged clone could no longer supply the chunking
+answer. This single three-paper run
 does not establish retrieval quality, billing accuracy, production reliability,
 or independent adoption. The app assumes one local writer using an advisory file lock; external writers, source
 mutations and distributed deployments need their own coordination and recovery.

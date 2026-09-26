@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased)
 
+- Add an actionable manual corpus-download recovery message and retain both
+  redundant-fact and unique-fact live omission comparisons.
 - Add clone-safe source installation, pinned corpus fetching, MIT licensing,
   clean-checkout CI, response-model evidence, and a live selective-edit command.
 - Record a sanitized bounded live OpenAI/FAISS acceptance run without API keys,

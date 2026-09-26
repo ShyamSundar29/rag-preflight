@@ -1,11 +1,14 @@
 """Offline tests for the clone-safe corpus downloader."""
 import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest import mock
+from urllib.error import URLError
 
 from pypdf import PdfWriter
 
@@ -103,6 +106,44 @@ class FetchCorpusTests(unittest.TestCase):
                 "scope": "exactly_listed_pdfs", "papers": [paper]}))
             with self.assertRaisesRegex(ValueError, "versioned arXiv"):
                 fetch_corpus.fetch(manifest, root / "output")
+
+    def test_blocked_download_explains_manual_recovery(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root / "output"
+            paper = {"source_id": "1234.56789v2.pdf",
+                "download_url": "https://arxiv.org/pdf/1234.56789v2",
+                "sha256": "a" * 64, "pages": 1}
+            manifest = root / "manifest.json"
+            manifest.write_text(json.dumps({"schema_version": 1,
+                "scope": "exactly_listed_pdfs", "papers": [paper]}))
+            with mock.patch.object(fetch_corpus, "_download",
+                                   side_effect=URLError("proxy blocked")), \
+                    self.assertRaises(ValueError) as caught:
+                fetch_corpus.fetch(manifest, output)
+            message = str(caught.exception)
+            self.assertIn("1234.56789v2.pdf", message)
+            self.assertIn(paper["download_url"], message)
+            self.assertIn(paper["sha256"], message)
+            self.assertIn(str((output / paper["source_id"]).resolve()), message)
+            self.assertIn("existing valid file", message)
+            self.assertFalse(list(output.glob("*.partial")))
+
+    def test_cli_reports_setup_error_without_traceback(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            manifest = root / "manifest.json"
+            manifest.write_text("{}", encoding="utf-8")
+            error = io.StringIO()
+            with mock.patch.object(fetch_corpus, "fetch",
+                                   side_effect=ValueError("manual recovery details")), \
+                    mock.patch.object(sys, "stderr", error), \
+                    self.assertRaises(SystemExit) as caught:
+                fetch_corpus.main(["--manifest", str(manifest),
+                                   "--output", str(root / "output")])
+            self.assertEqual(caught.exception.code, 2)
+            self.assertIn("Corpus setup error: manual recovery details", error.getvalue())
+            self.assertNotIn("Traceback", error.getvalue())
 
 
 if __name__ == "__main__":

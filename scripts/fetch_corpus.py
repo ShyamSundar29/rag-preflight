@@ -89,6 +89,17 @@ def _download(url: str, destination: Path, timeout: float) -> None:
         os.fsync(stream.fileno())
 
 
+def _download_error(paper: dict[str, object], target: Path, exc: Exception) -> ValueError:
+    """Return an actionable error without hiding the original network cause."""
+    return ValueError(
+        f"could not download {paper['source_id']} from {paper['download_url']}: {exc}. "
+        f"If automatic download is blocked, download that exact URL on an approved "
+        f"connected machine, verify SHA-256 {paper['sha256']}, and copy it to "
+        f"{target.resolve()}. Then rerun this command; an existing valid file is "
+        "verified without network access"
+    )
+
+
 def fetch(manifest: Path, output: Path, *, timeout: float = 60.0) -> list[str]:
     if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
             or not math.isfinite(timeout) or timeout <= 0):
@@ -111,7 +122,10 @@ def fetch(manifest: Path, output: Path, *, timeout: float = 60.0) -> list[str]:
         os.close(descriptor)
         temporary = Path(temporary_name)
         try:
-            _download(str(paper["download_url"]), temporary, timeout)
+            try:
+                _download(str(paper["download_url"]), temporary, timeout)
+            except (OSError, ValueError) as exc:
+                raise _download_error(paper, target, exc) from exc
             _verify(temporary, paper)
             os.replace(temporary, target)
         finally:

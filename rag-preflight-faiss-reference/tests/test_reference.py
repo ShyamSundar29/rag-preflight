@@ -113,6 +113,28 @@ class CorpusTests(unittest.TestCase):
         self.assertEqual(evidence['embedding']['two_chunk_edit']['completed_inputs'], 2)
         self.assertEqual(len(evidence['questions']), 4)
         self.assertIn('cannot answer', evidence['questions'][3]['answer'].lower())
+        unique = evidence['unique_fact_omission_comparison']
+        question = "How is each Wikipedia article split to build RAG's document index?"
+        self.assertEqual(unique['question'], question)
+        self.assertEqual(unique['removed_page'], {'source_id': '2005.11401v4.pdf',
+            'unit': 'page:4', 'removed_chunk_count': 3})
+        self.assertTrue(unique['guarded_index_preserved'])
+        self.assertTrue(unique['guarded_update_rejected'])
+        self.assertFalse(unique['causal_answer_loss_human_reviewed'])
+        self.assertEqual(unique['query_embedding']['actual_input_tokens'], 14)
+        self.assertEqual(unique['query_embedding']['input_hash'],
+                         hashlib.sha256(question.encode()).hexdigest())
+        self.assertIn('100 words', unique['guarded']['answer'])
+        self.assertIn('do not specify', unique['damaged_clone']['answer'])
+        self.assertTrue(any('page:4' in row['units']
+                            for row in unique['guarded']['retrieved_sources']))
+        self.assertFalse(any('page:4' in row['units']
+                             for row in unique['damaged_clone']['retrieved_sources']))
+        for view in ('guarded', 'damaged_clone'):
+            self.assertEqual(unique[view]['requested_model'], 'gpt-5.6-luna')
+            self.assertEqual(unique[view]['response_model'], 'gpt-5.6-luna')
+            self.assertFalse(unique[view]['answer_factuality_human_reviewed'])
+            self.assertFalse(unique[view]['citation_claim_support_human_reviewed'])
         values = []
         def collect(value):
             if isinstance(value, dict):
@@ -138,6 +160,11 @@ class CorpusTests(unittest.TestCase):
         self.assertEqual(len(candidate.chunks), 171)
         self.assertTrue(candidate.audit['passed'])
         self.assertTrue(candidate.chunk_audit['passed'])
+        unique_fact = [row for row in candidate.chunks if '100-word' in row['text'].lower()]
+        self.assertTrue(unique_fact)
+        self.assertTrue(all(row['metadata']['document_id'] == '2005.11401v4.pdf'
+                            and row['metadata']['units'] == ['page:4']
+                            for row in unique_fact))
         for evidence in candidate.source_evidence:
             self.assertEqual(len(evidence['sha256']), 64)
             self.assertFalse(evidence['extraction_failed_units'])

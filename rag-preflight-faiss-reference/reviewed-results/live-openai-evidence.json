@@ -321,6 +321,7 @@
   "evidence_boundaries": {
     "answer_factuality_human_reviewed": false,
     "api_key_recorded": false,
+    "causal_answer_loss_human_reviewed": false,
     "citation_claim_support_human_reviewed": false,
     "independently_reproduced": false,
     "live_openai_embeddings_verified": true,
@@ -332,7 +333,7 @@
     "requested_and_response_models_recorded": true,
     "vectors_recorded": false
   },
-  "executed_on": "2026-09-23",
+  "executed_on": "2026-09-25",
   "index_readback": {
     "ids_checked": 171,
     "passed": true,
@@ -343,14 +344,16 @@
     "One three-document corpus does not establish retrieval quality or production reliability.",
     "Successful API responses do not verify provider billing or historical model provenance.",
     "Citation labels identify retrieved chunks; human support and factuality review remains outstanding.",
-    "The page-2 omission changed retrieval and citations but did not remove enough evidence to force abstention."
+    "The page-2 omission remained answerable because the fact was repeated; the page-4 unique-fact comparison produced a materially different answer in the omission clone."
   ],
   "local_ignored_run_ids": {
     "edit": "7d5af1c6113a4a5faf6415e1055a4f7c",
     "initial": "7a59cbea2d1943f2992a436e4b90f66b",
     "metadata": "c1fbd37fde004ef7ad913fc5ec482b97",
     "omission": "1010d16083d442979b7dcc8d7d065cf8",
-    "unchanged": "816c88e6bc8c4956b7e03cb820fbd15c"
+    "unchanged": "816c88e6bc8c4956b7e03cb820fbd15c",
+    "unique_fact_comparison": "99610ef8b82c483980522a3ad2684398",
+    "unique_fact_omission": "3a56ab36bc814f268b38f9030098dd54"
   },
   "omission_comparison": {
     "causal_answer_loss_human_reviewed": false,
@@ -578,7 +581,124 @@
     "omission_comparison": "live",
     "out_of_scope_abstention": "live",
     "two_chunk_edit": "live",
-    "unchanged_reingestion": "live"
+    "unchanged_reingestion": "live",
+    "unique_fact_omission_comparison": "live"
   },
-  "schema_version": 2
+  "schema_version": 2,
+  "unique_fact_omission_comparison": {
+    "causal_answer_loss_human_reviewed": false,
+    "damaged_clone": {
+      "answer": "The supplied passages do not specify how each Wikipedia article is split into documents for RAG\u2019s index. They only state that document-index vectors are stored for all of Wikipedia [5].",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [
+        5
+      ],
+      "generation_input_tokens": 2432,
+      "generation_output_tokens": 140,
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:10"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:18"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:5"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:7"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:17"
+          ]
+        }
+      ]
+    },
+    "guarded": {
+      "answer": "Each Wikipedia article is split into **disjoint chunks of 100 words**. These chunks form **21 million documents** in total. RAG encodes each document into an embedding and builds a single **FAISS MIPS index**, using a Hierarchical Navigable Small World approximation for fast retrieval [2].",
+      "answer_factuality_human_reviewed": false,
+      "citation_claim_support_human_reviewed": false,
+      "claimed_citation_numbers": [
+        2
+      ],
+      "generation_input_tokens": 2438,
+      "generation_output_tokens": 127,
+      "requested_model": "gpt-5.6-luna",
+      "response_model": "gpt-5.6-luna",
+      "retrieved_sources": [
+        {
+          "number": 1,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:10"
+          ]
+        },
+        {
+          "number": 2,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:4"
+          ]
+        },
+        {
+          "number": 3,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:18"
+          ]
+        },
+        {
+          "number": 4,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:5"
+          ]
+        },
+        {
+          "number": 5,
+          "source_id": "2005.11401v4.pdf",
+          "units": [
+            "page:7"
+          ]
+        }
+      ]
+    },
+    "guarded_index_preserved": true,
+    "guarded_update_rejected": true,
+    "observed_result": "The intact index answered with the page-4 100-word chunking fact; the verified page-4 omission clone stated that the supplied passages do not specify the answer.",
+    "query_embedding": {
+      "actual_input_tokens": 14,
+      "input_hash": "430003f1957e128303dcab7185aec1893a67b7009eaa8d5cbb2b5aad645855b4",
+      "requested_model": "text-embedding-3-small",
+      "response_model": "text-embedding-3-small"
+    },
+    "question": "How is each Wikipedia article split to build RAG's document index?",
+    "removed_page": {
+      "removed_chunk_count": 3,
+      "source_id": "2005.11401v4.pdf",
+      "unit": "page:4"
+    }
+  }
 }

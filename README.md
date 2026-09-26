@@ -38,6 +38,9 @@ rag-preflight-chroma-reference/.venv/bin/python -m rag_preflight_reference dry-r
 The FAISS README gives the matching FAISS commands. Corpus setup downloads only
 the URLs in the pinned manifest and verifies SHA-256 and page counts before
 publishing each file under the ignored `pdfs/` directory.
+If a proxy blocks arXiv, the error names the exact URL, expected SHA-256 and
+destination path. Download that versioned file on an approved connected machine,
+copy it to the stated path, and rerun; existing valid files are verified offline.
 
 ## Repository boundaries
 

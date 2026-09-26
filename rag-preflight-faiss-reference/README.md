@@ -40,6 +40,9 @@ The corpus script downloads only the three versioned arXiv URLs in the pinned
 manifest, checks every SHA-256 and page count, and atomically publishes valid
 files under the ignored sibling `../pdfs/` directory. It refuses unexpected PDFs
 and mismatched existing files.
+If a proxy blocks arXiv, the error names the exact URL, expected SHA-256 and
+destination path. Download that versioned file on an approved connected machine,
+copy it to the stated path, and rerun; existing valid files are verified offline.
 
 Start with `rag-preflight check ../pdfs --expected corpus/expected-files.txt`
 when using the updated library wheel. Keep the independent list outside the
@@ -70,12 +73,13 @@ the dry-run and the model's current price, run:
 .venv/bin/python -m rag_preflight_faiss_reference verify-index
 .venv/bin/python -m rag_preflight_faiss_reference ingest  # expected: zero new embeddings
 .venv/bin/python -m rag_preflight_faiss_reference ingest --metadata-tag reviewed
-.venv/bin/python -m rag_preflight_faiss_reference demonstrate-omission 2005.11401v4.pdf page:2
+.venv/bin/python -m rag_preflight_faiss_reference demonstrate-omission 2005.11401v4.pdf page:4
 .venv/bin/python -m rag_preflight_faiss_reference demonstrate-text-edit 2005.11401v4.pdf
 .venv/bin/python -m rag_preflight_faiss_reference ask \
   "What two kinds of memory does RAG combine?" --generation-model MODEL_ID
 .venv/bin/python -m rag_preflight_faiss_reference compare-omission OMISSION_RUN_ID \
-  "A question whose evidence is on the omitted page" --generation-model MODEL_ID
+  "How is each Wikipedia article split to build RAG's document index?" \
+  --generation-model MODEL_ID
 ```
 
 `demonstrate-omission` deletes a page's records only from a separate local clone,
@@ -87,6 +91,12 @@ so the omission comparison needs human review. The generation model remains
 caller-selected. The bounded 2026-09-21 acceptance run used `gpt-5.6-luna`;
 callers should select and evaluate the model appropriate for their own accuracy
 and cost requirements.
+
+In the pinned extracted fixture, the 100-word chunking fact appears on page 4.
+The live intact index answered with that fact, while the verified page-4 omission
+clone stated that its supplied passages did not specify the answer. The earlier
+page-2 comparison remains in the evidence as a counterexample: repeated evidence
+on page 9 kept that answer available despite the omission.
 
 `demonstrate-text-edit` modifies exactly two synthetic chunk inputs, embeds only
 those inputs, verifies an isolated clone, and leaves the PDFs, ledger, and main
@@ -119,11 +129,11 @@ factually supported. The three-paper corpus is a limited acceptance fixture,
 not an operational track record.
 
 The sanitized [live evidence](reviewed-results/live-openai-evidence.json) records
-a bounded 2026-09-23 run with 171 real `text-embedding-3-small` vectors, complete
+bounded runs through 2026-09-25 with 171 real `text-embedding-3-small` vectors, complete
 FAISS payload/ID read-back, zero new embeddings for unchanged and metadata-only
 runs, a live two-chunk selective edit, four `gpt-5.6-luna` answers including an
-out-of-scope abstention, and a live omission comparison. The omitted page changed
-retrieval and citations but other indexed evidence still supported the answer.
+out-of-scope abstention, a redundant page-2 omission, and a page-4 unique-fact
+comparison whose damaged clone could no longer supply the chunking answer.
 The record includes requested and returned model names plus per-request token
 counts and input hashes. It excludes API keys, vectors, raw source text and request
 IDs. It does not verify provider billing, broad retrieval quality, citation
