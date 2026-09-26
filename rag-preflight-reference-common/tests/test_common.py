@@ -64,28 +64,23 @@ class CommonContractTests(unittest.TestCase):
 
     def test_writer_lock_serializes_processes(self):
         context = multiprocessing.get_context('spawn')
-        with tempfile.TemporaryDirectory() as folder, writer_lock(Path(folder)):
+        with tempfile.TemporaryDirectory() as folder:
             started = context.Event()
             acquired = context.Event()
             process = context.Process(target=_acquire_in_child,
                                       args=(folder, started, acquired))
-            process.start()
             try:
-                self.assertTrue(started.wait(5))
-                self.assertFalse(acquired.wait(0.3))
-            except BaseException:
+                with writer_lock(Path(folder)):
+                    process.start()
+                    self.assertTrue(started.wait(5))
+                    self.assertFalse(acquired.wait(0.3))
+                self.assertTrue(acquired.wait(5))
+                process.join(5)
+                self.assertEqual(process.exitcode, 0)
+            finally:
                 if process.is_alive():
                     process.terminate()
                     process.join(5)
-                raise
-        try:
-            self.assertTrue(acquired.wait(5))
-            process.join(5)
-            self.assertEqual(process.exitcode, 0)
-        finally:
-            if process.is_alive():
-                process.terminate()
-                process.join(5)
 
     def test_reusable_contract_checks_required_behavior(self):
         state: dict[str, Payload] = {}
