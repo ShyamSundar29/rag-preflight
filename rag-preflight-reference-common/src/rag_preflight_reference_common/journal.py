@@ -40,7 +40,7 @@ def atomic_json(path: Path, item: dict[str, Any]) -> None:
 @contextmanager
 def _locked_stream(stream: BinaryIO) -> Iterator[None]:
     if not _WINDOWS:
-        import fcntl
+        fcntl: Any = importlib.import_module('fcntl')
         fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
         try:
             yield
