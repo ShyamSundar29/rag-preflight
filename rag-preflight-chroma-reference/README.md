@@ -146,17 +146,23 @@ structured metrics or default event logs.
 `compare-omission` verifies the clone, embeds one shared question once, and uses
 the same query vector and generation model on both indexes. It records two
 retrieval/answer views. Another page may contain the answer, so the clone need
-not abstain; human review is required to establish the observed consequence.
+not abstain; each recorded comparison requires human review to establish the
+observed consequence.
 In the pinned extracted fixture, the 100-word chunking fact appears on page 4.
 The live intact index answered with that fact, while the verified page-4 omission
 clone stated that its supplied passages did not specify the answer. The earlier
 page-2 comparison remains in the evidence as a useful counterexample: repeated
-evidence on page 9 kept that answer available despite the omission.
+evidence on page 9 kept that answer available despite the omission. The repository
+owner reviewed the page-4 intact answer, its page-4 citation, the damaged answer's
+factual refusal, and the observed causal difference on 2026-09-26; the damaged
+answer's separate citation-support flag remains unreviewed.
 The selective-edit command changes two synthetic chunk inputs, calls the embedding
 provider only for those inputs, writes only to an isolated clone, and verifies the
 main index remained unchanged. It does not claim that the underlying PDF changed.
 The bounded live evidence includes this comparison; causal interpretation still
-requires human review because other indexed pages can contain the same answer.
+requires human review for each run because other indexed pages can contain the
+same answer. The recorded page-4 run has that review; the page-2 result shows why
+the review cannot be inferred automatically.
 
 A write-interruption scenario is available with `ingest --fail-after-upserts`, but
 run it in a disposable state directory or after backing up local state. It leaves

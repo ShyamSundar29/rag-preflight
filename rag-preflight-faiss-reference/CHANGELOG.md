@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased)
 
+- Record the repository owner's bounded human review of the page-4 answer,
+  citation, damaged-index refusal, and causal comparison.
 - Add an actionable manual corpus-download recovery message and retain both
   redundant-fact and unique-fact live omission comparisons.
 - Add clone-safe source installation, pinned corpus fetching, MIT licensing,

@@ -96,7 +96,10 @@ In the pinned extracted fixture, the 100-word chunking fact appears on page 4.
 The live intact index answered with that fact, while the verified page-4 omission
 clone stated that its supplied passages did not specify the answer. The earlier
 page-2 comparison remains in the evidence as a counterexample: repeated evidence
-on page 9 kept that answer available despite the omission.
+on page 9 kept that answer available despite the omission. The repository owner
+reviewed the page-4 intact answer, its page-4 citation, the damaged answer's
+factual refusal, and the observed causal difference on 2026-09-26; the damaged
+answer's separate citation-support flag remains unreviewed.
 
 `demonstrate-text-edit` modifies exactly two synthetic chunk inputs, embeds only
 those inputs, verifies an isolated clone, and leaves the PDFs, ledger, and main

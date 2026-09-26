@@ -159,7 +159,7 @@ class CorpusTests(unittest.TestCase):
             'unit': 'page:4', 'removed_chunk_count': 3})
         self.assertTrue(unique['guarded_index_preserved'])
         self.assertTrue(unique['guarded_update_rejected'])
-        self.assertFalse(unique['causal_answer_loss_human_reviewed'])
+        self.assertTrue(unique['causal_answer_loss_human_reviewed'])
         self.assertEqual(unique['query_embedding']['actual_input_tokens'], 14)
         self.assertEqual(unique['query_embedding']['input_hash'],
                          hashlib.sha256(question.encode()).hexdigest())
@@ -172,8 +172,20 @@ class CorpusTests(unittest.TestCase):
         for view in ('guarded', 'damaged_clone'):
             self.assertEqual(unique[view]['requested_model'], 'gpt-5.6-luna')
             self.assertEqual(unique[view]['response_model'], 'gpt-5.6-luna')
-            self.assertFalse(unique[view]['answer_factuality_human_reviewed'])
-            self.assertFalse(unique[view]['citation_claim_support_human_reviewed'])
+            self.assertTrue(unique[view]['answer_factuality_human_reviewed'])
+        self.assertTrue(unique['guarded']['citation_claim_support_human_reviewed'])
+        self.assertFalse(unique['damaged_clone']['citation_claim_support_human_reviewed'])
+        self.assertEqual(unique['human_review'], {
+            'reviewed_by': 'Shyam Sundar',
+            'reviewed_on': '2026-09-26',
+            'scope': [
+                'intact_answer_factuality',
+                'intact_page_4_citation_support',
+                'damaged_answer_factuality',
+                'causal_answer_loss',
+            ],
+            'unreviewed': ['damaged_answer_citation_support'],
+        })
         values = []
         def collect(value):
             if isinstance(value, dict):

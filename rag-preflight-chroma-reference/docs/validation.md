@@ -9,7 +9,10 @@ requests total 171 inputs and 67,083 tokens. The page-2 comparison remained
 answerable from repeated page-9 evidence. A second live comparison removed page 4,
 whose 100-word chunking fact is unique in the extracted fixture: the intact index
 answered it, while the omission clone stated that its passages did not specify
-the answer. Human citation, factuality and causal review remains outstanding.
+the answer. On 2026-09-26, repository owner Shyam Sundar reviewed the intact
+answer's factuality and page-4 citation, the damaged answer's factual refusal,
+and the observed causal difference. The damaged answer's separate citation claim
+remains unreviewed, as do the other live answers unless their fields say otherwise.
 
 Local PDFs passed file-magic, SHA-256, `pdfinfo` page-tree, pypdf text extraction
 and rendered first-page title/version checks. Counts: 19, 18 and 30 pages;
@@ -32,9 +35,9 @@ payloads. Unchanged and metadata-only runs each performed zero embeddings. One
 question embedding used 10 tokens, and one Responses API call used 1,995 input
 and 42 output tokens. The resulting answer cited retrieved passages 1 and 3.
 The sanitized record is `reviewed-results/live-openai-evidence.json`; API keys,
-request IDs, vectors and raw source text are excluded. Provider billing, citation
-support, factuality, broad retrieval quality and production reliability remain
-unverified.
+request IDs, vectors and raw source text are excluded. Provider billing, broad
+retrieval quality and production reliability remain unverified. Human-review
+status is recorded per answer rather than inferred from the run.
 
 The final source-tree check passed 15 tests on Python 3.12.13 in 43.520 seconds.
 Mypy reported no issues in nine application source files, Python compilation

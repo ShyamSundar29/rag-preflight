@@ -53,3 +53,23 @@ and known limitations.
 No component treats namespace checking as access control, reconciliation as vector
 content verification, citation labels as factual proof, or a successful local test
 run as production history.
+
+## Recorded omission evidence
+
+The Chroma and FAISS reference applications contain bounded live OpenAI comparisons
+using the same pinned research-paper corpus. When page 4 of the RAG paper was
+removed from an isolated index clone, three chunks disappeared. The intact indexes
+answered the page-specific 100-word chunking question and cited page 4; the damaged
+clones stated that the supplied passages did not contain the answer. In both
+applications, RAG Preflight rejected the incomplete candidate and preserved the
+main index.
+
+The evidence also retains a counterexample: removing page 2 did not remove the
+answer because page 9 repeated the relevant fact. These controlled results
+demonstrate the failure mode and show how corpus redundancy can reduce its visible
+effect. They do not establish effectiveness across every corpus or production
+environment. The strongest expected use cases are changing collections where a
+specific fact may exist in only one source unit, such as contracts, policies,
+procedures, specifications, tickets, and meeting records. This is a risk-based
+positioning statement, not a measured comparison among industries. No external
+user or production deployment evidence is currently recorded in this repository.

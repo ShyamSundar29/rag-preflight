@@ -357,8 +357,8 @@
   },
   "omission_comparison": {
     "causal_answer_loss_human_reviewed": false,
-    "damaged_clone_answer": "The original RAG formulation combines:\n\n1. **Parametric memory**\u2014the generator\u2019s learned parameters (BART).\n2. **Non-parametric memory**\u2014an external document index used for retrieval.\n\nThis is explicitly described as \u201chybrid generation models with access to parametric and non-parametric memory\u201d [1].",
-    "guarded_answer": "The original RAG formulation combines **parametric memory**\u2014knowledge stored in the model\u2019s parameters\u2014with **non-parametric memory**\u2014an external document index accessed through retrieval [1][2].",
+    "damaged_clone_answer": "The original RAG formulation combines:\n\n1. **Parametric memory**—the generator’s learned parameters (BART).\n2. **Non-parametric memory**—an external document index used for retrieval.\n\nThis is explicitly described as “hybrid generation models with access to parametric and non-parametric memory” [1].",
+    "guarded_answer": "The original RAG formulation combines **parametric memory**—knowledge stored in the model’s parameters—with **non-parametric memory**—an external document index accessed through retrieval [1][2].",
     "guarded_index_preserved": true,
     "guarded_update_rejected": true,
     "live_query_embedding_calls": 1,
@@ -372,7 +372,7 @@
   "proof_kind": "bounded_live_openai_reference_run",
   "questions": [
     {
-      "answer": "The original RAG formulation combines **parametric memory** (stored in the model\u2019s parameters) and **non-parametric memory** (an external document index) [1][2].",
+      "answer": "The original RAG formulation combines **parametric memory** (stored in the model’s parameters) and **non-parametric memory** (an external document index) [1][2].",
       "answer_factuality_human_reviewed": false,
       "citation_claim_support_human_reviewed": false,
       "claimed_citation_numbers": [
@@ -423,7 +423,7 @@
       ]
     },
     {
-      "answer": "The **lost-in-the-middle effect** is the tendency of language models to use information from long contexts less effectively when that information appears in the middle than when it appears near the beginning or end.\n\nPerformance typically follows a **U-shaped pattern**: models show a \u201cprimacy bias\u201d for information at the start and a \u201crecency bias\u201d for information at the end, while accuracy can decline substantially when the relevant information is located in the middle of a long context [5]. This effect occurs in tasks such as multi-document question answering and key-value retrieval, including for models designed to handle long contexts [1].",
+      "answer": "The **lost-in-the-middle effect** is the tendency of language models to use information from long contexts less effectively when that information appears in the middle than when it appears near the beginning or end.\n\nPerformance typically follows a **U-shaped pattern**: models show a “primacy bias” for information at the start and a “recency bias” for information at the end, while accuracy can decline substantially when the relevant information is located in the middle of a long context [5]. This effect occurs in tasks such as multi-document question answering and key-value retrieval, including for models designed to handle long contexts [1].",
       "answer_factuality_human_reviewed": false,
       "citation_claim_support_human_reviewed": false,
       "claimed_citation_numbers": [
@@ -474,7 +474,7 @@
       ]
     },
     {
-      "answer": "When retrieval is used, SELF-RAG does not simply prepend retrieved passages once. It is trained to **retrieve on demand, generate, and critique both the passages and its own output** using reflection tokens [2]. It can also filter irrelevant passages and assess factors such as relevance and factual support without relying on an external inference-time model [3].\n\nRetrieval substantially improves performance in the reported ablation: on the evaluated tasks, the **\u201cNo retrieval\u201d** setting scores **24.7, 73.0**, whereas retrieving the top passage scores **41.8, 73.1, and 28.6** [1]. However, SELF-RAG is designed for **selective** retrieval rather than mandatory retrieval, allowing retrieval frequency and behavior to be customized at test time [2][3].",
+      "answer": "When retrieval is used, SELF-RAG does not simply prepend retrieved passages once. It is trained to **retrieve on demand, generate, and critique both the passages and its own output** using reflection tokens [2]. It can also filter irrelevant passages and assess factors such as relevance and factual support without relying on an external inference-time model [3].\n\nRetrieval substantially improves performance in the reported ablation: on the evaluated tasks, the **“No retrieval”** setting scores **24.7, 73.0**, whereas retrieving the top passage scores **41.8, 73.1, and 28.6** [1]. However, SELF-RAG is designed for **selective** retrieval rather than mandatory retrieval, allowing retrieval frequency and behavior to be customized at test time [2][3].",
       "answer_factuality_human_reviewed": false,
       "citation_claim_support_human_reviewed": false,
       "claimed_citation_numbers": [
@@ -586,10 +586,10 @@
   },
   "schema_version": 2,
   "unique_fact_omission_comparison": {
-    "causal_answer_loss_human_reviewed": false,
+    "causal_answer_loss_human_reviewed": true,
     "damaged_clone": {
-      "answer": "The supplied passages do not specify how each Wikipedia article is split into documents for RAG\u2019s index. They only state that document-index vectors are stored for all of Wikipedia [5].",
-      "answer_factuality_human_reviewed": false,
+      "answer": "The supplied passages do not specify how each Wikipedia article is split into documents for RAG’s index. They only state that document-index vectors are stored for all of Wikipedia [5].",
+      "answer_factuality_human_reviewed": true,
       "citation_claim_support_human_reviewed": false,
       "claimed_citation_numbers": [
         5
@@ -638,8 +638,8 @@
     },
     "guarded": {
       "answer": "Each Wikipedia article is split into **disjoint chunks of 100 words**. These chunks form **21 million documents** in total. RAG encodes each document into an embedding and builds a single **FAISS MIPS index**, using a Hierarchical Navigable Small World approximation for fast retrieval [2].",
-      "answer_factuality_human_reviewed": false,
-      "citation_claim_support_human_reviewed": false,
+      "answer_factuality_human_reviewed": true,
+      "citation_claim_support_human_reviewed": true,
       "claimed_citation_numbers": [
         2
       ],
@@ -699,6 +699,19 @@
       "removed_chunk_count": 3,
       "source_id": "2005.11401v4.pdf",
       "unit": "page:4"
+    },
+    "human_review": {
+      "reviewed_by": "Shyam Sundar",
+      "reviewed_on": "2026-09-26",
+      "scope": [
+        "intact_answer_factuality",
+        "intact_page_4_citation_support",
+        "damaged_answer_factuality",
+        "causal_answer_loss"
+      ],
+      "unreviewed": [
+        "damaged_answer_citation_support"
+      ]
     }
   }
 }

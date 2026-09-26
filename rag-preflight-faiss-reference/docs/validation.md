@@ -25,9 +25,12 @@ chunking fact, while the omission clone stated that its passages did not specify
 the answer. The sanitized
 record is `reviewed-results/live-openai-evidence.json`; it includes requested and
 returned model names, per-request token counts and input hashes, while excluding
-API keys, request IDs, vectors and raw source text. Provider billing, human
-citation support, factuality, broad retrieval quality, causal answer loss and
-production reliability remain unverified.
+API keys, request IDs, vectors and raw source text. On 2026-09-26, repository
+owner Shyam Sundar reviewed the page-4 intact answer's factuality and citation,
+the damaged answer's factual refusal, and the observed causal difference. Its
+damaged-answer citation claim and the other answers remain unreviewed unless their
+fields say otherwise. Provider billing, broad retrieval quality and production
+reliability remain unverified.
 
 The shared application-only package owns ingestion, provider requests, journal
 and CLI dispatch; this project owns the 120-line FAISS adapter and settings.
