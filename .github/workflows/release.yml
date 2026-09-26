@@ -37,13 +37,21 @@ jobs:
           if tag != f'v{version}':
               raise SystemExit(f'tag {tag!r} does not match package version {version!r}')
           PY
-      - name: Build and inspect distributions
+      - name: Build distributions
         run: |
-          python -m pip install --upgrade build mypy twine
-          python -m unittest discover -s rag-preflight/tests -v
-          python -m mypy rag-preflight/src/rag_preflight
+          python -m pip install --upgrade build twine
           python -m build rag-preflight --outdir dist
           python -m twine check --strict dist/*
+      - name: Type-check source
+        working-directory: rag-preflight
+        run: |
+          python -m pip install mypy
+          python -m mypy src/rag_preflight
+      - name: Test the built wheel with optional backends
+        working-directory: rag-preflight
+        run: |
+          python -m pip install "$(ls ../dist/*.whl)[numpy,pdf,office]"
+          python -m unittest discover -s tests -v
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: python-distributions
