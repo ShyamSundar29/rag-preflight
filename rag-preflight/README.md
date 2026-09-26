@@ -1,16 +1,16 @@
 # RAG Preflight
 
 Validate source completeness, embeddings, and document updates before changing a
-RAG vector database. **Version 0.1.0, unreleased.** Python 3.10+. MIT license.
+RAG vector database. **Version 0.1.0 release candidate.** Python 3.10+. MIT license.
 The core has no third-party runtime dependencies and makes no network calls.
 
 RAG Preflight validates source coverage, chunk integrity, embedding declarations,
 and proposed ingestion changes. It produces reports and guarded update plans;
 your application controls embedding, retrieval, and vector-store writes.
 
-See the [quickstart](docs/quickstart.md), [API and migration notes](docs/api.md),
-[existing-index JSONL workflow](docs/existing-index.md), [failure taxonomy](docs/failures.md),
-and [public API, policy and stored-format commitments](docs/compatibility.md).
+See the [quickstart](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/quickstart.md), [API and migration notes](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/api.md),
+[existing-index JSONL workflow](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/existing-index.md), [failure taxonomy](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/failures.md),
+and [public API, policy and stored-format commitments](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/compatibility.md).
 New workflows include compact reports, text-scoped baselines, embedding cost estimates,
 structured metrics, and bounded receipts for rows/APIs/crawlers.
 
@@ -31,7 +31,7 @@ repeatable, guarded update plan. It works with ordinary Python data.
 For a first look at **current source extraction**, point the CLI at a folder:
 
 ```sh
-python -m pip install -e '.[pdf,office]'  # unpublished local source; optional formats
+python -m pip install 'rag-preflight[pdf,office]'
 rag-preflight check ./documents
 rag-preflight check ./documents --json --max-examples 3
 rag-preflight check ./documents --expected expected-files.txt
@@ -59,7 +59,7 @@ memory grows with the extracted corpus; batch large folders. The user reported
 36 PDFs/804 pages in 30 seconds at 71 MB peak and 300 text files in 0.1 seconds;
 these are local observations, not a general memory bound or performance promise.
 File sizes, parser behavior and measurement method were not supplied.
-See [check to guarded ingestion](docs/check-to-pipeline.md) for a path from this
+See [check to guarded ingestion](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/check-to-pipeline.md) for a path from this
 diagnostic to a maintained pipeline.
 
 ### Messy-document acceptance
@@ -76,7 +76,7 @@ It exercises invalid UTF-8, empty/damaged/encrypted PDFs, an image-only PDF, a
 and an unsupported file. Linux and Windows CI run the suite with the real optional
 readers. These license-safe fixtures test known failure handling; they are not
 evidence from an external production corpus. See
-[messy-document acceptance](docs/messy-documents.md).
+[messy-document acceptance](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/messy-documents.md).
 
 Open a terminal in the extracted `rag-preflight` source directory:
 
@@ -100,9 +100,9 @@ python -m pip install ../artifacts/rag_preflight-0.1.0-py3-none-any.whl
 ```
 
 The ignored `artifacts` directory is created by that command; it is not part of
-the source repository. The package is not published to PyPI. Package metadata
-points to the current private repository and its tracked documentation; public
-availability remains pending the release decision.
+the source repository. Until the first PyPI upload, use this source-build path.
+The repository must be publicly readable when the release is published so the
+package's Repository, Documentation, Issues and Changelog links resolve for users.
 
 ## Capabilities
 
@@ -131,7 +131,7 @@ print(report.to_dict())
 ```
 
 No manifest is needed for chunk checks. This example warns about a short chunk;
-lexical analysis needs at least five chunks. See [adoption](docs/adoption.md) for
+lexical analysis needs at least five chunks. See [adoption](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/adoption.md) for
 PDF extraction receipts, generic extraction, chunk keys, framework converters,
 warning baselines and a runnable LangGraph validation gate.
 
@@ -306,7 +306,7 @@ a no-op keeps the revision. `document_ids()` enumerates the ledger without loadi
 payloads. `load_documents(ids)` exports selected documents; exporting all IDs to one
 JSON snapshot still requires whole-corpus memory. `verify()` scans every stored
 revision, identity and chunk count plus SQLite integrity. `chunk_ids()` streams
-verified IDs one document at a time. See [operator and apply checks](docs/production.md)
+verified IDs one document at a time. See [operator and apply checks](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/production.md)
 for `reconcile()` and its complete-namespace requirements.
 
 Portable JSON snapshots still use schema version 1; existing hash-only snapshots
@@ -317,7 +317,7 @@ in successive batches without constructing a full-corpus Snapshot.
 
 SQLite protects the ledger, not a vector database transaction. Hold an application
 lock across base verification, external writes and ledger commit, or use a generation
-switch. See [production integration](docs/production.md).
+switch. See [production integration](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/production.md).
 
 ## Cumulative deletion visibility
 
@@ -333,12 +333,12 @@ ID removals, net shrinkage and exempt removal categories. It does not impose a
 cumulative hard gate or verify external writes. SQLite schema 1 migrates to 2;
 pre-tracking history remains explicitly unverified. Young-ledger windows explicitly
 exclude initial population when necessary for a meaningful nonzero baseline. See [window and migration
-rules](docs/api.md#cumulative-deletion-visibility-sqlite).
+rules](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/api.md#cumulative-deletion-visibility-sqlite).
 
 Python `AuditReport.to_dict()` now defaults to compact output; `.issues` and
-`to_dict(detailed=True)` retain debugging detail. This changes the unpublished
-Python JSON shape, matching the CLI. Taxonomy coverage is tested against source.
-For adoption validation, use the separate [Chroma/FAISS integration contract](docs/integration-validation.md).
+`to_dict(detailed=True)` retain debugging detail. This pre-1.0 change makes the
+Python JSON shape match the CLI. Taxonomy coverage is tested against source.
+For adoption validation, use the separate [Chroma/FAISS integration contract](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/integration-validation.md).
 
 ## CLI
 
@@ -369,7 +369,7 @@ A failed audit leaves an existing candidate file unchanged: check exit status.
 
 ## Evidence and limits
 
-The included [public-corpus trial](docs/corpus-results.json) covers an RFC PDF and
+The included [public-corpus trial](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/corpus-results.json) covers an RFC PDF and
 pandas Markdown README, 210 source units and 701 chunks, plus eleven injected scenarios. The unmodified Markdown source produces one
 low-yield warning for a short license section; see the recorded finding.
 It is a small real-source trial with dummy vectors, not a production load test.
@@ -383,9 +383,10 @@ source manifests and receipts. Batch validation and individual-document snapshot
 still use memory proportional to their input. A single enormous document remains
 an in-memory unit even with SQLite.
 
-See [validation](docs/validation.md), [changelog](CHANGELOG.md),
-[contributing](CONTRIBUTING.md), and [license](LICENSE). CI is configured for multiple
-runtimes/OSes but has not yet run on GitHub for this unpublished project.
+See [validation](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/validation.md), [changelog](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/CHANGELOG.md),
+[contributing](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/CONTRIBUTING.md), and [license](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/LICENSE). GitHub Actions exercises
+Python 3.10 through 3.14 on Linux plus Python 3.12 on macOS and Windows; separate
+jobs cover optional integrations, messy documents and clean-clone reference apps.
 
 CLI discovery: `rag-preflight --help` lists every workflow;
 `rag-preflight existing-index --help` shows export/scope options.
@@ -406,7 +407,7 @@ library is safe in every pipeline. Validate source mapping, completeness evidenc
 namespace policy, locking, write visibility and recovery against your deployment.
 The project has a reproducible limited corpus trial and independent reviewer checks,
 not established operational history across independent production deployments.
-Private pilots can supply that evidence while version 0.1.0 remains unreleased.
+External users and deployments must supply that operational evidence after release.
 
 Its strongest use case is the next ingestion of a changing corpus: loader omissions
 can otherwise become unintended index deletions. Initial ingestion also benefits
@@ -414,7 +415,7 @@ from source coverage, chunk integrity and embedding checks; retrieval quality an
 prompt design remain outside scope. “Second ingestion” describes updating an index,
 not prompt injection or model training.
 
-For existing pipelines, start with the [store export recipes](docs/export-recipes.md).
+For existing pipelines, start with the [store export recipes](https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/docs/export-recipes.md).
 
 CLI invocation requires a command or chunk input file. No arguments return exit
 status 2 with usage on stderr; explicit `--help` and `-h` return status 0.

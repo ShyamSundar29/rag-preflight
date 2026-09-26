@@ -12,8 +12,14 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
 ]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,6 +30,8 @@ dependencies = []
 [project.urls]
 Repository = "https://github.com/ShyamSundar29/rag-preflight"
 Documentation = "https://github.com/ShyamSundar29/rag-preflight/tree/main/rag-preflight/docs"
+Issues = "https://github.com/ShyamSundar29/rag-preflight/issues"
+Changelog = "https://github.com/ShyamSundar29/rag-preflight/blob/main/rag-preflight/CHANGELOG.md"
 
 [project.scripts]
 rag-preflight = "rag_preflight.cli:main"

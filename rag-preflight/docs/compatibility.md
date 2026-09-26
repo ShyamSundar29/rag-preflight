@@ -1,4 +1,4 @@
-# Public contracts and stored-format policy (0.1.0, unreleased)
+# Public contracts and stored-format policy (0.1.0)
 
 The supported Python API is the set exported by `rag_preflight.__all__` and
 documented in [API notes](api.md). Documented CLI commands, exit codes, JSON
@@ -29,5 +29,5 @@ atomically; use a backup before opening an older ledger. Warning-baseline
 schema 1 retains original strict fingerprint semantics when read by schema 2.
 No future schema migration is promised until it is implemented and tested.
 
-The package is still unpublished. These rules describe the intended contract
-for its first release; they do not imply production history or external review.
+These rules define the 0.1.0 public contract. They do not imply production history
+or broad external review.

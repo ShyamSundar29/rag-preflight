@@ -1,4 +1,4 @@
-# Failure taxonomy (0.1.0, unreleased)
+# Failure taxonomy (0.1.0)
 
 Every public finding code is listed below. Warnings are heuristics or explicit
 unknowns; errors block ordinary validation. Caller warning budgets/baseline gates

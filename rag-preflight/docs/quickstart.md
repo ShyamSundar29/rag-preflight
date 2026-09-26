@@ -1,4 +1,4 @@
-# Quickstart (unreleased 0.1.0)
+# Quickstart (0.1.0)
 
 Install from the local wheel; there is no published release:
 
@@ -70,8 +70,9 @@ failure recovery and access controls belong to your application; use the
 [production integration contract](production.md).
 
 
-Updated unpublished builds keep version 0.1.0; use --force-reinstall when an older
-0.1.0 wheel is already installed. Python chunk JSON is now compact by default;
+During release-candidate testing, rebuilt wheels keep version 0.1.0; use
+`--force-reinstall` when an older local 0.1.0 wheel is already installed. Python
+chunk JSON is now compact by default;
 request `report.to_dict(detailed=True)` for individual findings. For SQLite rolling
 deletion visibility run `ledger.deletion_summary(last_commits=4)` after commit;
 see [history/window rules](api.md#cumulative-deletion-visibility-sqlite). History

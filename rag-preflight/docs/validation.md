@@ -1,4 +1,28 @@
-# Validation record — unreleased 0.1.0
+# Validation record — 0.1.0 release candidate
+
+## 2026-09-26 publication-preparation verification
+
+The release-candidate source ran 245 tests across the repository: 192 core tests
+(189 passed and 3 optional framework tests skipped), 21 Chroma tests, 20 FAISS
+tests, 5 shared-reference tests and 7 corpus-downloader tests. Mypy passed all
+17 core, 19 Chroma/shared, 19 FAISS/shared and 10 shared-package source files.
+The current GitHub Actions runs preceding this documentation-only release update
+were green across the configured Linux, macOS and Windows jobs; the release update
+must pass the same checks after push.
+
+The core source and wheel distributions were rebuilt outside the repository using
+Python 3.12. `twine check --strict` passed both artifacts. The wheel installed with
+`--no-deps` into a new environment containing only pip and `rag-preflight==0.1.0`;
+isolated import, metadata/version checks, `pip check`, top-level help, no-argument
+exit 2 and an intentional chunk-audit rejection exit 1 all passed. Wheel metadata
+contains the Repository, Documentation, Issues and Changelog URLs, Python 3.10–3.14
+classifiers, the `Typing :: Typed` classifier and no unconditional dependencies.
+
+The public-corpus trial was downloaded into a fresh temporary cache. It reproduced
+2 documents, 210 units, 701 chunks and all 11 injected scenarios. The natural
+low-yield warning, skipped optional heuristics, and known within-unit and uniform
+truncation limits remain visible. No distribution was uploaded and no repository
+visibility, provider credential or package-index setting was changed by this run.
 
 ## 2026-09-20 front-door and compatibility update
 
@@ -26,7 +50,8 @@ offline source tests respectively after extracting a shared application-only
 pipeline; both use simulated vectors. Live OpenAI acceptance remains unverified
 because no API key is configured and no generation model has been selected.
 
-The paragraphs below preserve earlier revision results as a historical record.
+The paragraphs below preserve earlier revision results as a historical record;
+statements about pending checks describe those earlier revisions.
 
 Current local verification: CPython 3.14.6, macOS arm64, 2026-09-14.
 No publication, deployment, or public repository creation was performed.

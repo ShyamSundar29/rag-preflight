@@ -1,9 +1,10 @@
 # Real integration validation: separate application
 
-Two separate research-paper RAG reference applications and executable offline
-integration harnesses now exist: one for Chroma and one for FAISS. Their live
-OpenAI acceptance is still pending; simulated embeddings do not prove retrieval
-quality. They share an application-only pipeline package and keep store-specific
+Two separate research-paper RAG reference applications and executable integration
+harnesses now exist: one for Chroma and one for FAISS. Both retain bounded live
+OpenAI evidence alongside simulated failure/recovery tests. The live three-paper
+trial does not establish broad retrieval quality or production reliability. They
+share an application-only pipeline package and keep store-specific
 adapters and dependencies in their own projects. Their
 embedding/tokenizer/vector-store/application dependencies remain in its own project
 and lockfile. No SDK, model runtime, retrieval framework or chatbot enters core.
@@ -43,10 +44,10 @@ content check; matching producer model labels are not proof of model execution.
 
 1. The Chroma adapter and durable journal are implemented outside the library.
    Offline tests exercise persistent writes, read-back and restart recovery.
-2. The OpenAI embedding implementation is wired but its live calls remain unverified
-   in this environment. A live acceptance run must retain request-boundary token
-   evidence, requested model identifier and available request IDs. Do not invent
-   prices or treat dummy vectors as integration validation.
+2. The bounded OpenAI acceptance runs retain request-boundary token evidence,
+   requested and returned model identifiers, and sanitized results. API keys,
+   vectors, request IDs and raw source text are excluded. Do not generalize these
+   runs into provider reliability or broad retrieval-quality claims.
 3. Fault and restart/recovery checks are automated with persisted local evidence.
    A live comparison must be repeatable by another engineer. Its report must state what was actually
    exercised and what remains unverified.
@@ -66,6 +67,6 @@ The outcome is a maintained reference integration that engineers can adapt, plus
 regression evidence for the library. It is not automatically a deployable production
 chatbot. Application access controls, provider reliability, retrieval quality,
 backup, crash consistency and operational ownership need their own validation.
-Both applications have offline vector-store verification. Neither has completed
-a paid OpenAI ingestion and answer run in this environment, and neither is
-production-proven by the three-paper test corpus.
+Both applications have offline vector-store verification and completed bounded
+OpenAI ingestion and answer runs. Neither is production-proven by the three-paper
+test corpus.

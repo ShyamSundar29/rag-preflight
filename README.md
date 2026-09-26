@@ -1,7 +1,8 @@
 # RAG Preflight workspace
 
-Private, unreleased workspace for RAG Preflight 0.1.0 and its reference
-applications.
+Release-candidate workspace for RAG Preflight 0.1.0 and its reference
+applications. The core library is the only package intended for PyPI; the
+reference applications remain source examples in this repository.
 
 RAG Preflight validates source coverage, chunk integrity, embedding declarations,
 and proposed ingestion changes. It produces reports and guarded update plans;
@@ -18,7 +19,8 @@ writes.
 | `rag-preflight-faiss-reference/` | Local FAISS/OpenAI research-paper reference application. |
 
 Each package keeps its own README, changelog, tests, build metadata, and version.
-All remain at version 0.1.0 and unreleased.
+All remain at version 0.1.0. See [RELEASING.md](RELEASING.md) for the core release
+process and the external approvals required before publication.
 
 ## Clone quickstart
 

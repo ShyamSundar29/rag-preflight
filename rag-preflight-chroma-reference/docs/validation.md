@@ -53,7 +53,8 @@ tests against the installed application in 48.448 seconds. The installed CLI
 passed `verify-papers` (171 chunks, zero API calls) and `dry-run` (171 planned
 embeddings, 67,083 tokenizer-input tokens, $0.00134166 estimated embedding
 cost, zero API calls). Package contents and final artifact checksums are recorded
-with the private distributions. Version 0.1.0 remains private/unreleased.
+with the locally staged distributions. The reference application remains a source
+example and is not published to PyPI.
 FAISS is a separate application and is not part of this Chroma test result.
 
 2026-09-19 update: after adding the independent expected-file list and tightening

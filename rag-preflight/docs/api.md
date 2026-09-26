@@ -1,4 +1,4 @@
-# API and compatibility notes (0.1.0, unreleased)
+# API and compatibility notes (0.1.0)
 
 RAG Preflight validates source coverage, chunk integrity, embedding declarations,
 and proposed ingestion changes. It produces reports and guarded update plans;

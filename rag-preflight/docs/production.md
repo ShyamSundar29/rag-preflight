@@ -1,4 +1,4 @@
-# Production integration contract — unreleased 0.1.0
+# Production integration contract — 0.1.0
 
 This library validates inputs and creates advisory plans. The application owns
 source authenticity, authorization, provider calls, vector writes, concurrency and
@@ -254,9 +254,10 @@ See [window definitions and migration](api.md#cumulative-deletion-visibility-sql
 
 The separate [integration validation contract](integration-validation.md) defines
 embedding, read-back and crash/recovery checks. Chroma and FAISS reference
-applications now exist outside the core; their offline tests use simulated vectors,
-and live OpenAI acceptance remains pending. They are executable test harnesses,
-not core SDK integrations.
+applications now exist outside the core. They retain both simulated failure tests
+and bounded live OpenAI evidence for ingestion, retrieval, omission and selective
+re-embedding. They are executable test harnesses, not core SDK integrations or
+production-service guarantees.
 
 
 For scheduled monitoring use `rag-preflight ledger summary ledger.db --json`.
@@ -280,7 +281,7 @@ library is safe in every pipeline. Validate source mapping, completeness evidenc
 namespace policy, locking, write visibility and recovery against your deployment.
 The project has a reproducible limited corpus trial and independent reviewer checks,
 not established operational history across independent production deployments.
-Private pilots can supply that evidence while version 0.1.0 remains unreleased.
+External users and deployments must supply that operational evidence after release.
 
 Its strongest use case is the next ingestion of a changing corpus: loader omissions
 can otherwise become unintended index deletions. Initial ingestion also benefits

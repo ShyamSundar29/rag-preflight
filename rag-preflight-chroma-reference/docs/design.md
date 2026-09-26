@@ -7,7 +7,7 @@ adapter and local configuration. The shared package is outside the dependency-
 free RAG Preflight library core.
 
 This project is an executable integration, not a second library feature set. It
-consumes a private 0.1.0 RAG Preflight wheel. The library's separate folder-check
+consumes the 0.1.0 RAG Preflight package. The library's separate folder-check
 helpers and optional Office extras do not add OpenAI or Chroma to its core.
 
 ## Requirements trace
@@ -20,7 +20,7 @@ helpers and optional Office extras do not add OpenAI or Chroma to its core.
 | R4 | Store explicit text, metadata and vectors in persistent Chroma; reopen/read back all three. | Complete ID/payload/vector checks, drift test and bounded live read-back. |
 | R5 | Keep Chroma apply and SQLite commit ordered, journaled and recoverable. | Upsert-verify-delete-verify-commit sequence; interruption and post-commit repair tests. |
 | R6 | Compare naive omission with guarded rejection without harming main index. | Isolated cloned Chroma collection; page:2 scenario. |
-| R7 | Ask with real query embeddings, retrieved paper/page labels and limited OpenAI generation. | `ask` command and live question-bank run; human citation review pending. |
+| R7 | Ask with real query embeddings, retrieved paper/page labels and limited OpenAI generation. | `ask` command, live question-bank run and explicit per-answer human-review fields. |
 | R8 | Maintain separate configuration, state, evidence and dependency versions. | `requirements.lock`, run artifacts, ignored state, operator review. |
 | R9 | Present offline evidence without suggesting semantic retrieval proof. | Curated run checks, per-row simulated labels, no simulated distances. |
 | R10 | Expose a selective text-edit plan and same-question omission comparison. | Live synthetic two-chunk clone and live shared-query comparison; causal interpretation remains human-reviewed. |

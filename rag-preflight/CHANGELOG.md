@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.1.0 (unreleased) — current-source adoption update
+## 0.1.0 (release candidate)
+
+### Current-source adoption update
 
 - Add Linux/Windows messy-document acceptance using generated real PDF, DOCX,
   PPTX, HTML, and text edge cases; classify encrypted PDFs explicitly.
@@ -17,9 +19,9 @@
   unverified historical index coverage.
 - Added static UTF-8 HTML/text readers and optional Word/PowerPoint receipt
   subsets; empty PDF pages with image objects get a heuristic warning.
-- Kept core runtime dependencies empty and version 0.1.0 unreleased.
+- Kept core runtime dependencies empty.
 
-## 0.1.0 — Unreleased
+### CLI and operator updates
 
 - Exit 2 on missing CLI arguments while explicit help remains exit 0.
 - Add paginated read-only export recipes and qualify deployment responsibility/evidence.
@@ -73,7 +75,7 @@
   ID-only apply limits, source requirements and framework cleanup ownership.
 
 
-All development remains part of the unpublished initial release.
+All changes above are included in the initial 0.1.0 release candidate.
 
 - Added chunk validation, source-unit completeness, explicit blank/unknown coverage,
   and compatibility aliases for existing PDF page manifests.
@@ -88,5 +90,6 @@ All development remains part of the unpublished initial release.
   version-independent CI wheel selection, and separated downloadable build artifacts.
 - Added regression tests and a reproducible trial using an RFC PDF and pandas README.
 
-No package or public repository has been published. Project URLs will be populated
-when actual repository/documentation destinations exist.
+Project metadata points to the repository, documentation, issue tracker and this
+changelog. Publication uses the tag-gated Trusted Publishing workflow documented
+in the repository release checklist.
