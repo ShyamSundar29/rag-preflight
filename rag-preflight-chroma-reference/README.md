@@ -220,7 +220,10 @@ mutations and distributed deployments need their own coordination and recovery.
 Namespace consistency is not access control. Citation labels refer to retrieved
 passages, not verified answer factuality. Empty or weak retrieval should cause
 abstention. Human citation-support and factuality review of the fixed
-[question set](corpus/questions.json) remains outstanding.
+[question set](corpus/questions.json) remains outstanding. Evidence schema 3
+records `reviewed`, `unreviewed`, and `not_applicable` at each reviewable claim
+and derives a scenario-indexed `human_review_summary`; the current overall
+status is `partial`.
 Use the private wheel or source distribution for handoff. Both omit `.venv/`,
 `state/` and `runs/`; zipping the working folder directly would include those
 large local artifacts.

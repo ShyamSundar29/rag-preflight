@@ -31,7 +31,9 @@ owner Shyam Sundar reviewed the page-4 intact answer's factuality and citation,
 the damaged answer's factual refusal, and the observed causal difference. Its
 damaged-answer citation claim and the other answers remain unreviewed unless their
 fields say otherwise. Provider billing, broad retrieval quality and production
-reliability remain unverified.
+reliability remain unverified. Schema 3 stores those states per reviewable claim
+and a derived `human_review_summary`. Tests recompute the summary, so scenario
+and top-level review status cannot silently disagree.
 
 The shared application-only package owns ingestion, provider requests, journal
 and CLI dispatch; this project owns the 120-line FAISS adapter and settings.

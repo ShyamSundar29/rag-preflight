@@ -18,7 +18,8 @@ from rag_preflight_reference.config import Settings
 from rag_preflight_reference.corpus import CandidateRejected, prepare
 from rag_preflight_reference.provider import Answer, EmbeddingBatch
 from rag_preflight_reference.store import ChromaStore
-from rag_preflight_reference_common.testing import assert_vector_store_contract
+from rag_preflight_reference_common.testing import (assert_vector_store_contract,
+                                                     summarize_human_review)
 from rag_preflight_reference_common.tokenizer import TokenizerUnavailableError
 from rag_preflight_reference.cli import main as cli_main
 
@@ -116,6 +117,7 @@ class CorpusTests(unittest.TestCase):
     def test_curated_live_evidence_is_sanitized_and_bounded(self):
         root = Settings.local().root
         evidence = json.loads((root / 'reviewed-results/live-openai-evidence.json').read_text())
+        self.assertEqual(evidence['schema_version'], 3)
         self.assertEqual(evidence['proof_kind'], 'bounded_live_openai_reference_run')
         self.assertEqual(evidence['backend'], 'chroma')
         self.assertEqual(evidence['embedding']['first_ingestion']['completed_inputs'], 171)
@@ -129,6 +131,10 @@ class CorpusTests(unittest.TestCase):
         self.assertFalse(boundaries['provider_billing_dashboard_verified'])
         self.assertFalse(boundaries['independently_reproduced'])
         self.assertTrue(boundaries['requested_and_response_models_recorded'])
+        self.assertNotIn('causal_answer_loss_human_reviewed', boundaries)
+        self.assertEqual(evidence['human_review_summary'],
+                         summarize_human_review(evidence))
+        self.assertEqual(evidence['human_review_summary']['status'], 'partial')
         requests = evidence['embedding']['first_ingestion']['requests']
         self.assertEqual(sum(row['actual_input_tokens'] for row in requests), 67083)
         self.assertEqual(sum(len(row['input_hashes']) for row in requests), 171)
@@ -152,6 +158,12 @@ class CorpusTests(unittest.TestCase):
         self.assertEqual(evidence['embedding']['two_chunk_edit']['completed_inputs'], 2)
         self.assertEqual(len(evidence['questions']), 4)
         self.assertIn('cannot answer', evidence['questions'][3]['answer'].lower())
+        self.assertTrue(all(question['review_status']['answer_factuality'] == 'unreviewed'
+                            for question in evidence['questions']))
+        self.assertEqual(evidence['questions'][3]['review_status']
+                         ['citation_claim_support'], 'not_applicable')
+        self.assertEqual(evidence['omission_comparison']['review_status'],
+                         {'causal_answer_loss': 'unreviewed'})
         unique = evidence['unique_fact_omission_comparison']
         question = "How is each Wikipedia article split to build RAG's document index?"
         self.assertEqual(unique['question'], question)
@@ -159,7 +171,7 @@ class CorpusTests(unittest.TestCase):
             'unit': 'page:4', 'removed_chunk_count': 3})
         self.assertTrue(unique['guarded_index_preserved'])
         self.assertTrue(unique['guarded_update_rejected'])
-        self.assertTrue(unique['causal_answer_loss_human_reviewed'])
+        self.assertEqual(unique['review_status'], {'causal_answer_loss': 'reviewed'})
         self.assertEqual(unique['query_embedding']['actual_input_tokens'], 14)
         self.assertEqual(unique['query_embedding']['input_hash'],
                          hashlib.sha256(question.encode()).hexdigest())
@@ -172,9 +184,12 @@ class CorpusTests(unittest.TestCase):
         for view in ('guarded', 'damaged_clone'):
             self.assertEqual(unique[view]['requested_model'], 'gpt-5.6-luna')
             self.assertEqual(unique[view]['response_model'], 'gpt-5.6-luna')
-            self.assertTrue(unique[view]['answer_factuality_human_reviewed'])
-        self.assertTrue(unique['guarded']['citation_claim_support_human_reviewed'])
-        self.assertFalse(unique['damaged_clone']['citation_claim_support_human_reviewed'])
+            self.assertEqual(unique[view]['review_status']['answer_factuality'],
+                             'reviewed')
+        self.assertEqual(unique['guarded']['review_status']['citation_claim_support'],
+                         'reviewed')
+        self.assertEqual(unique['damaged_clone']['review_status']
+                         ['citation_claim_support'], 'unreviewed')
         self.assertEqual(unique['human_review'], {
             'reviewed_by': 'Shyam Sundar',
             'reviewed_on': '2026-09-26',

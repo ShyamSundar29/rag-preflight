@@ -37,7 +37,10 @@ and 42 output tokens. The resulting answer cited retrieved passages 1 and 3.
 The sanitized record is `reviewed-results/live-openai-evidence.json`; API keys,
 request IDs, vectors and raw source text are excluded. Provider billing, broad
 retrieval quality and production reliability remain unverified. Human-review
-status is recorded per answer rather than inferred from the run.
+status is recorded per answer rather than inferred from the run. Schema 3 also
+stores a derived `human_review_summary`. Tests recompute it from the question,
+page-2 comparison, and unique-fact comparison review states, so a contradictory
+top-level review claim fails validation.
 
 The final source-tree check passed 15 tests on Python 3.12.13 in 43.520 seconds.
 Mypy reported no issues in nine application source files, Python compilation

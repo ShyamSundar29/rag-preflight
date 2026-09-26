@@ -11,7 +11,8 @@ from unittest import mock
 from rag_preflight_reference_common import journal
 from rag_preflight_reference_common.journal import writer_lock
 from rag_preflight_reference_common.store import Payload
-from rag_preflight_reference_common.testing import assert_vector_store_contract
+from rag_preflight_reference_common.testing import (assert_vector_store_contract,
+                                                     summarize_human_review)
 from rag_preflight_reference_common.tokenizer import (CL100K_CACHE_NAME,
     CL100K_SHA256, CL100K_URL, TokenizerUnavailableError, encoding_for_model)
 
@@ -43,6 +44,34 @@ def _acquire_in_child(root, started, acquired):
 
 
 class CommonContractTests(unittest.TestCase):
+    def test_human_review_summary_is_derived_from_scenario_checks(self):
+        evidence = {
+            'questions': [
+                {'review_status': {'answer_factuality': 'unreviewed',
+                                   'citation_claim_support': 'not_applicable'}},
+            ],
+            'omission_comparison': {
+                'review_status': {'causal_answer_loss': 'unreviewed'},
+            },
+            'unique_fact_omission_comparison': {
+                'review_status': {'causal_answer_loss': 'reviewed'},
+                'guarded': {'review_status': {'answer_factuality': 'reviewed',
+                                               'citation_claim_support': 'reviewed'}},
+                'damaged_clone': {
+                    'review_status': {'answer_factuality': 'reviewed',
+                                      'citation_claim_support': 'unreviewed'},
+                },
+            },
+        }
+        summary = summarize_human_review(evidence)
+        self.assertEqual(summary['status'], 'partial')
+        self.assertEqual(summary['reviewed_checks'], 4)
+        self.assertEqual(summary['unreviewed_checks'], 3)
+        self.assertEqual(summary['not_applicable_checks'], 1)
+        evidence['questions'][0]['review_status']['answer_factuality'] = 'unknown'
+        with self.assertRaisesRegex(AssertionError, 'unknown human-review status'):
+            summarize_human_review(evidence)
+
     def test_windows_lock_path_retries_contention_and_unlocks(self):
         calls = []
         attempts = 0

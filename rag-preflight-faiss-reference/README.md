@@ -141,7 +141,10 @@ comparison whose damaged clone could no longer supply the chunking answer.
 The record includes requested and returned model names plus per-request token
 counts and input hashes. It excludes API keys, vectors, raw source text and request
 IDs. It does not verify provider billing, broad retrieval quality, citation
-support, factuality, or production reliability.
+support, factuality, or production reliability. Evidence schema 3 records
+`reviewed`, `unreviewed`, and `not_applicable` at each reviewable claim and
+derives a scenario-indexed `human_review_summary`; the current overall status
+is `partial`.
 
 Run `.venv/bin/python -m unittest discover -s tests -v` for local tests.
 The FAISS adapter also runs the reusable

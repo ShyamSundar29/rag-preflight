@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased)
 
+- Replace contradictory broad human-review booleans with schema-3 per-claim
+  states and a mechanically verified, scenario-indexed partial-review summary.
 - Support and continuously test the local application workflow and writer lock
   on Windows in addition to macOS/Linux.
 - Record the repository owner's bounded human review of the page-4 answer,
