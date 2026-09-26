@@ -51,8 +51,9 @@ it cannot lock external Chroma clients or a changing source filesystem. A full
 same-scope Chroma enumeration and ledger reconciliation is required before a new
 operation. Chroma offset scans rely on stable writes. The required list of PDFs is
 fixed by the manifest; editing PDF bytes requires an explicit new manifest and
-operator review, not silent adoption of a changed file. The lock uses `fcntl`;
-Windows has not been validated. Wheel/sdist handoffs exclude `.venv`, Chroma
+operator review, not silent adoption of a changed file. The lock uses `fcntl`
+on macOS/Linux and `msvcrt` on Windows. Linux and Windows CI exercise real
+two-process exclusion and the full clean-clone app. Wheel/sdist handoffs exclude `.venv`, Chroma
 state and full run journals.
 
 `source_id` is the exact PDF filename within the explicitly scoped sibling directory.

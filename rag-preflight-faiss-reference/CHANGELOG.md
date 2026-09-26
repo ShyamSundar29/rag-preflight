@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased)
 
+- Support and continuously test the local application workflow and writer lock
+  on Windows in addition to macOS/Linux.
 - Record the repository owner's bounded human review of the page-4 answer,
   citation, damaged-index refusal, and causal comparison.
 - Add an actionable manual corpus-download recovery message and retain both

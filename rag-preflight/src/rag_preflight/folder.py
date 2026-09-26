@@ -148,6 +148,7 @@ class FolderCheckReport:
                         else:
                             explanation = {'invalid_utf8': 'not valid UTF-8 text',
                                            'empty_file': 'file is empty',
+                                           'encrypted_pdf': 'PDF is encrypted and no password was supplied',
                                            'invalid_pdf': 'file is damaged or not a readable PDF',
                                            'permission_denied': 'permission denied while reading file',
                                            'source_changed': 'source changed while it was being read'}.get(
@@ -201,6 +202,8 @@ def _read_failure(path: Path, exc: Exception) -> dict[str, str]:
     reason = ('reader_unavailable' if isinstance(exc, (ImportError, ModuleNotFoundError)) else
               'invalid_utf8' if isinstance(exc, UnicodeError) else
               'empty_file' if name == 'EmptyFileError' else
+              'encrypted_pdf' if path.suffix.lower() == '.pdf' and name in
+                  ('FileNotDecryptedError', 'WrongPasswordError') else
               'invalid_pdf' if path.suffix.lower() == '.pdf' and name in ('PdfReadError', 'PdfStreamError') else
               'permission_denied' if isinstance(exc, PermissionError) else
               'source_changed' if isinstance(exc, ValueError) and str(exc) == 'Source changed during extraction' else

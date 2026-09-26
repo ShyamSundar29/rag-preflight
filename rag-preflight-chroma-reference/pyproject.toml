@@ -9,7 +9,8 @@ description = "Separate, evidence-driven Chroma reference integration for RAG Pr
 requires-python = ">=3.12"
 license = "MIT"
 license-files = ["LICENSE"]
-classifiers = ["Operating System :: MacOS", "Operating System :: POSIX :: Linux"]
+classifiers = ["Operating System :: MacOS", "Operating System :: POSIX :: Linux",
+               "Operating System :: Microsoft :: Windows"]
 dependencies = ["rag-preflight-reference-common==0.1.0", "chromadb>=1.0,<3"]
 
 [project.urls]

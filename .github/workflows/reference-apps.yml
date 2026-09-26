@@ -7,7 +7,12 @@ permissions:
 
 jobs:
   common:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    name: common (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -19,7 +24,7 @@ jobs:
       - run: python -m pip install -e rag-preflight -e rag-preflight-reference-common
       - run: python -m unittest discover -s rag-preflight-reference-common/tests -v
       - run: python -m mypy rag-preflight-reference-common/src/rag_preflight_reference_common
-      - run: python -m build rag-preflight-reference-common --outdir "${RUNNER_TEMP}/common-dist"
+      - run: python -m build rag-preflight-reference-common --outdir "${{ runner.temp }}/common-dist"
 
   clean-clone:
     strategy:
@@ -27,13 +32,23 @@ jobs:
       matrix:
         include:
           - application: Chroma
+            os: ubuntu-latest
             directory: rag-preflight-chroma-reference
             module: rag_preflight_reference
           - application: FAISS
+            os: ubuntu-latest
             directory: rag-preflight-faiss-reference
             module: rag_preflight_faiss_reference
-    name: clean clone (${{ matrix.application }})
-    runs-on: ubuntu-latest
+          - application: Chroma
+            os: windows-latest
+            directory: rag-preflight-chroma-reference
+            module: rag_preflight_reference
+          - application: FAISS
+            os: windows-latest
+            directory: rag-preflight-faiss-reference
+            module: rag_preflight_faiss_reference
+    name: clean clone (${{ matrix.application }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -42,9 +57,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Export tracked repository
-        run: |
-          mkdir "${RUNNER_TEMP}/rag-preflight-export"
-          git archive HEAD | tar -x -C "${RUNNER_TEMP}/rag-preflight-export"
+        run: >-
+          python -c "import pathlib, subprocess, tarfile;
+          base=pathlib.Path(r'${{ runner.temp }}');
+          root=base/'rag-preflight-export'; root.mkdir();
+          archive=base/'rag-preflight.tar';
+          subprocess.check_call(['git','archive','-o',str(archive),'HEAD']);
+          tarfile.open(archive).extractall(root, filter='data')"
       - name: Install from clone instructions
         working-directory: ${{ runner.temp }}/rag-preflight-export/${{ matrix.directory }}
         run: |
@@ -64,7 +83,7 @@ jobs:
           python -m pip check
       - name: Build application distribution
         working-directory: ${{ runner.temp }}/rag-preflight-export
-        run: python -m build ${{ matrix.directory }} --outdir "${RUNNER_TEMP}/${{ matrix.directory }}-dist"
+        run: python -m build ${{ matrix.directory }} --outdir "${{ runner.temp }}/${{ matrix.directory }}-dist"
 
   corpus-downloader:
     runs-on: ubuntu-latest

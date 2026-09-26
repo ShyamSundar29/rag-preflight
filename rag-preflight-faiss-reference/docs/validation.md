@@ -10,8 +10,9 @@ re-ingestion, selective edit preview, exact FAISS search after restart, isolated
 omission, rejection before main-index writes, payload/ID drift, interruption,
 journal recovery, citations and provider-request boundaries. Mypy passed on all
 nine application source files. It now also runs the reusable shared adapter
-contract. The common package passes two self-tests covering that contract and the
-restricted-network tokenizer diagnostic. These are local results, not live provider proof.
+contract. The common package passes four self-tests covering that contract, the
+restricted-network tokenizer diagnostic, simulated Windows locking, and actual
+two-process exclusion. These are local results, not live provider proof.
 
 The bounded live acceptance begun on 2026-09-23 and extended on 2026-09-25 used `text-embedding-3-small` and
 `gpt-5.6-luna`. Initial ingestion completed 171 inputs in 11 embedding requests
@@ -36,7 +37,7 @@ The shared application-only package owns ingestion, provider requests, journal
 and CLI dispatch; this project owns the 120-line FAISS adapter and settings.
 The payload JSON file is authoritative local state. The FAISS `IndexFlatL2`
 search index is rebuilt from it after restart. Full-payload rewrite cost, memory
-growth, local `fcntl` lock and lack of distributed coordination limit this
+growth, local platform lock and lack of distributed coordination limit this
 reference design to controlled small corpora. Chroma and FAISS results should
 be compared with the same source hashes, question set and generation model; do
 not compare simulated-vector rankings as retrieval-quality evidence.

@@ -2,6 +2,8 @@
 
 ## 0.1.0 (unreleased) — current-source adoption update
 
+- Add Linux/Windows messy-document acceptance using generated real PDF, DOCX,
+  PPTX, HTML, and text edge cases; classify encrypted PDFs explicitly.
 - Make the text footer list only checks actually left unverified; with
   `--expected`, expected-file absence is no longer described as unchecked.
 - Declare public finding-code/default-policy compatibility and stored-format

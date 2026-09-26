@@ -62,6 +62,22 @@ File sizes, parser behavior and measurement method were not supplied.
 See [check to guarded ingestion](docs/check-to-pipeline.md) for a path from this
 diagnostic to a maintained pipeline.
 
+### Messy-document acceptance
+
+The repository includes a reproducible, generated real-format acceptance suite:
+
+```sh
+python -m pip install -e '.[pdf,office]'
+python scripts/messy_document_acceptance.py
+```
+
+It exercises invalid UTF-8, empty/damaged/encrypted PDFs, an image-only PDF, a
+1,000-paragraph DOCX, an image-heavy PPTX, static HTML, a missing expected file,
+and an unsupported file. Linux and Windows CI run the suite with the real optional
+readers. These license-safe fixtures test known failure handling; they are not
+evidence from an external production corpus. See
+[messy-document acceptance](docs/messy-documents.md).
+
 Open a terminal in the extracted `rag-preflight` source directory:
 
 ```bash

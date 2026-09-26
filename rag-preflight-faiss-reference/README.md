@@ -15,10 +15,11 @@ an atomic local JSON payload file and rebuilds an exact `IndexFlatL2` FAISS inde
 from that file on restart. This design makes the small fixed corpus testable but
 rewrites the full payload on each mutation. It is **not** a scaling claim for
 large corpora or distributed/multiwriter systems. The application holds one
-local `fcntl` writer lock, journals unfinished operations, verifies payloads and
-complete IDs, then commits the Preflight SQLite ledger. External writes and
-ledger commits are not atomic together. macOS/Linux Python 3.12+ is the
-supported local test scope; Windows is unvalidated.
+local writer lock using `fcntl` on macOS/Linux and `msvcrt` on Windows, journals
+unfinished operations, verifies payloads and complete IDs, then commits the
+Preflight SQLite ledger. External writes and ledger commits are not atomic
+together. Python 3.12+ on macOS, Linux, and Windows is the supported local scope;
+hosted CI runs the full clean-clone suite on Linux and Windows.
 
 ## Install and inspect without API calls
 

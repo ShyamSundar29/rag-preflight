@@ -11,8 +11,9 @@ source inventory, OpenAI requests, guarded apply, journal and CLI workflow.
 This project owns the Chroma adapter and its configuration; it does not import
 FAISS.
 
-**Platform scope: Python 3.12+ on macOS/Linux. Windows has not been validated.**
-The local writer lock uses `fcntl`. The bounded live evidence described below
+**Platform scope: Python 3.12+ on macOS, Linux, and Windows.** The local writer
+lock uses `fcntl` on macOS/Linux and `msvcrt` on Windows; hosted CI runs the full
+clean-clone application suite on Linux and Windows. The bounded live evidence described below
 uses real OpenAI embeddings and generation; it is acceptance evidence for this
 fixture, not a production reliability claim.
 
@@ -54,8 +55,9 @@ claim is inferred from PDF extraction alone.
 
 ## Install and run locally
 
-Use Python 3.12+ on macOS or Linux for this application; the local
-writer lock uses `fcntl` and Windows is not validated. The library itself still supports 3.10+.
+Use Python 3.12+ on macOS, Linux, or Windows for this application. The local
+cross-platform lock coordinates only this application's processes. The library
+itself still supports 3.10+.
 The frozen [dependency versions](requirements.lock) are separate from the library
 and are the versions used for local validation. In a fresh application environment (for a wheel installed outside this folder,
 pass `--app-root /absolute/path/to/rag-preflight-chroma-reference` before the command

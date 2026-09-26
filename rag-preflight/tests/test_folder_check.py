@@ -75,8 +75,18 @@ class FolderCheckTests(unittest.TestCase):
     def test_pdf_error_categories_and_expected_scope_under_exclusion(self):
         PdfStreamError = type('PdfStreamError', (Exception,), {})
         EmptyFileError = type('EmptyFileError', (Exception,), {})
+        FileNotDecryptedError = type('FileNotDecryptedError', (Exception,), {})
         self.assertEqual(_read_failure(Path('bad.pdf'), PdfStreamError())['reason'], 'invalid_pdf')
         self.assertEqual(_read_failure(Path('empty.pdf'), EmptyFileError())['reason'], 'empty_file')
+        self.assertEqual(_read_failure(Path('secret.pdf'), FileNotDecryptedError())['reason'],
+                         'encrypted_pdf')
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch('rag_preflight.folder.pypdf_receipt',
+                           side_effect=FileNotDecryptedError()):
+            root = Path(tmp)
+            (root / 'secret.pdf').write_bytes(b'%PDF')
+            self.assertIn('encrypted and no password was supplied',
+                          check_source_folder(root).table())
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / 'sources'
             root.mkdir()

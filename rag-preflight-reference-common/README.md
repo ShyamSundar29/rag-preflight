@@ -14,6 +14,15 @@ sanitized evidence from a completed OpenAI acceptance run. Those records cover
 the pinned fixture; they do not establish broad retrieval quality or production
 reliability.
 
+Local writers are serialized by a dependency-free platform lock: `fcntl.flock`
+on macOS/Linux and a one-byte `msvcrt.locking` region on Windows. CI runs an
+actual two-process exclusion test on Linux and Windows. This coordinates only
+processes using this application state directory; it is not a distributed lock
+and cannot coordinate external vector-store writers. JSON files are flushed and
+replaced atomically. POSIX also syncs the parent directory; Python does not expose
+a portable Windows directory-fsync equivalent, so sudden-power-loss durability
+depends on the Windows filesystem after replacement.
+
 Third adapters can run `assert_vector_store_contract(factory)` from
 `rag_preflight_reference_common.testing`. The factory receives a `create` boolean
 and must reopen the same isolated three-dimensional test store. The contract

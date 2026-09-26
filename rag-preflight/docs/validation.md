@@ -238,3 +238,19 @@ run successfully checked the three research PDFs: 3 files, 67 page units, zero
 missing units, with absent expected files, historical index coverage and
 within-unit completeness marked unverified. This revision has not been rerun on
 Python 3.10 at runtime.
+
+## Generated messy-document acceptance
+
+The 2026-09-26 generated acceptance run used the real optional PDF and Office
+readers against ten supported files plus one unsupported file. Six supported
+files were inventoried successfully; invalid UTF-8, empty/damaged/encrypted PDFs,
+an image-only PDF, empty image-heavy slides, script-only HTML, and one independently
+expected missing PDF all remained visible in the compact result. The 1,000-paragraph
+DOCX retained its final paragraph and table content, and static HTML excluded script
+text. The run produced 26 candidate chunks and one bounded likely-image-only
+warning. It is deterministic regression evidence, not an external-corpus or OCR
+quality claim. The release CI repeats this acceptance on Linux and Windows.
+The complete local suite contains 192 tests: the dependency-free environment
+passed 182 and skipped 10 optional checks; the PDF/Office application environment
+passed 189 and skipped only the three optional framework checks. The shared
+reference package passed four tests, Chroma passed 21, and FAISS passed 20.
