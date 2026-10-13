@@ -1,6 +1,6 @@
 # RAG Preflight workspace
 
-Release-candidate workspace for RAG Preflight 0.1.0 and its reference
+Release workspace for RAG Preflight 0.1.0 and its reference
 applications. The core library is the only package intended for PyPI; the
 reference applications remain source examples in this repository.
 

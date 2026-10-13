@@ -1,8 +1,25 @@
-# Validation record — 0.1.0 release candidate
+# Validation record — 0.1.0
+
+## 2026-10-12 release verification
+
+The final source ran 245 tests across the repository: 192 core tests (189 passed
+and 3 optional framework tests skipped), 21 Chroma tests, 20 FAISS tests, 5
+shared-reference tests and 7 corpus-downloader tests. Core, shared, Chroma and
+FAISS source passed mypy; the local FAISS check applied the core package's
+documented missing-import policy for optional Office modules. No provider calls
+were made.
+
+The source and wheel distributions were built from a clean temporary export.
+`twine check --strict` passed both artifacts. The wheel installed with
+`--no-deps` in a new Python 3.12 environment, `pip check` passed, imports resolved
+to that environment, package metadata reported 0.1.0 with no unconditional
+dependencies, top-level help succeeded, and the no-argument CLI returned exit 2.
+The release workflow repeats the build, type check, optional-backend suite,
+TestPyPI installation and CLI smoke checks before requesting PyPI approval.
 
 ## 2026-09-26 publication-preparation verification
 
-The release-candidate source ran 245 tests across the repository: 192 core tests
+The publication-preparation source ran 245 tests across the repository: 192 core tests
 (189 passed and 3 optional framework tests skipped), 21 Chroma tests, 20 FAISS
 tests, 5 shared-reference tests and 7 corpus-downloader tests. Mypy passed all
 17 core, 19 Chroma/shared, 19 FAISS/shared and 10 shared-package source files.

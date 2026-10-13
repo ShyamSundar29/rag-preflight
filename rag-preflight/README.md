@@ -1,7 +1,7 @@
 # RAG Preflight
 
 Validate source completeness, embeddings, and document updates before changing a
-RAG vector database. **Version 0.1.0 release candidate.** Python 3.10+. MIT license.
+RAG vector database. **Version 0.1.0, released October 12, 2026.** Python 3.10+. MIT license.
 The core has no third-party runtime dependencies and makes no network calls.
 
 RAG Preflight validates source coverage, chunk integrity, embedding declarations,

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (release candidate)
+## 0.1.0 — 2026-10-12
 
 ### Current-source adoption update
 
@@ -75,7 +75,7 @@
   ID-only apply limits, source requirements and framework cleanup ownership.
 
 
-All changes above are included in the initial 0.1.0 release candidate.
+All changes above are included in the initial 0.1.0 release.
 
 - Added chunk validation, source-unit completeness, explicit blank/unknown coverage,
   and compatibility aliases for existing PDF page manifests.
