@@ -4,7 +4,9 @@
 
 Release commit 83fbb75 passed both repository workflows on GitHub Actions: core
 tests run 15 and reference applications run 13, each completed successfully
-across the configured Linux, macOS and Windows jobs.
+across the configured Linux, macOS and Windows jobs. This
+record and the release-date update are documentation-only changes on top of that
+commit; the tagged release commit must pass the same workflows after push.
 
 The core source and wheel distributions were rebuilt from that commit outside the
 repository. twine check --strict passed both artifacts. The wheel installed with
