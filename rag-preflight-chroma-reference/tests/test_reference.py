@@ -289,6 +289,13 @@ class ChromaIntegrationTests(unittest.TestCase):
         root = Path(folder)
         return replace(base, state_root=root / 'state', runs_root=root / 'runs')
 
+    def test_store_context_manager_releases_client_idempotently(self):
+        with tempfile.TemporaryDirectory() as folder:
+            settings = replace(self.settings(folder), embedding_dimensions=3)
+            with ChromaStore(settings, collection_name='close-contract') as store:
+                self.assertEqual(store.ids(), set())
+            store.close()
+
     def test_shared_vector_store_contract(self):
         with tempfile.TemporaryDirectory() as folder:
             settings = replace(self.settings(folder), embedding_dimensions=3)

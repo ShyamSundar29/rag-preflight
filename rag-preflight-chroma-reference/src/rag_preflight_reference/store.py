@@ -11,12 +11,37 @@ class ChromaStore:
         import chromadb
         settings.state_root.mkdir(mode=0o700, parents=True, exist_ok=True)
         self.settings = settings
+        self._closed = False
         self.client = chromadb.PersistentClient(
             path=str(settings.state_root / 'chroma'),
             settings=chromadb.Settings(anonymized_telemetry=False))
         name = collection_name or settings.collection_name
         self.collection = (self.client.get_or_create_collection(name=name, embedding_function=None)
                            if create else self.client.get_collection(name=name, embedding_function=None))
+
+    def close(self) -> None:
+        """Release Chroma's database handles; safe to call more than once."""
+        if getattr(self, '_closed', True):
+            return
+        self._closed = True
+        client = self.client
+        close = getattr(client, 'close', None)
+        if close is not None:
+            close()
+
+    def __enter__(self) -> 'ChromaStore':
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
+        self.close()
+
+    def __del__(self) -> None:
+        try:
+            self.close()
+        except Exception:
+            # Destructors run during interpreter shutdown too; explicit close()
+            # and the context manager remain the observable error paths.
+            pass
 
     def ids(self) -> set[str]:
         result: set[str] = set()
