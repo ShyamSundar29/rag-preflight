@@ -404,9 +404,9 @@ class ChromaIntegrationTests(unittest.TestCase):
             app = ReferenceApp(settings)
             provider = FakeProvider()
             app.ingest(provider)
-            store = ChromaStore(settings)
-            victim = next(iter(store.ids()))
-            store.delete([victim])
+            with ChromaStore(settings) as store:
+                victim = next(iter(store.ids()))
+                store.delete([victim])
             calls = provider.calls
             with self.assertRaises(ValueError):
                 app.ingest(provider)
