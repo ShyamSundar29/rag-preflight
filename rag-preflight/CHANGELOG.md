@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 — 2026-10-12
+## 0.1.0 — 2026-11-19
 
 ### Current-source adoption update
 
