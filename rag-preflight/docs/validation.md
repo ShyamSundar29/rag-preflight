@@ -1,5 +1,22 @@
 # Validation record — 0.1.0
 
+## 2026-11-19 release verification
+
+Release commit 83fbb75 passed both repository workflows on GitHub Actions: core
+tests run 15 and reference applications run 13, each completed successfully
+across the configured Linux, macOS and Windows jobs.
+
+The core source and wheel distributions were rebuilt from that commit outside the
+repository. twine check --strict passed both artifacts. The wheel installed with
+the numpy, pdf and office extras into a new environment reporting rag-preflight
+0.1.0. Mypy passed all 17 core source files. The core suite ran 192 tests with
+189 passing and 3 optional framework tests skipped. Top-level help succeeded and
+the no-argument CLI returned exit 2. The shared-reference suite ran 5 tests and
+the corpus-downloader suite ran 7 tests, all passing. The Chroma and FAISS
+application suites were not re-run outside CI for this record; their coverage for
+this commit is the reference applications workflow run named above. No
+distribution was uploaded and no provider calls were made.
+
 ## 2026-10-12 release verification
 
 The final source ran 245 tests across the repository: 192 core tests (189 passed
